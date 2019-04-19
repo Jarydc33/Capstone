@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AllergyFinder.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,21 +13,64 @@ namespace AllergyFinder.Controllers
     {
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ViewBag.Name = user.Name;
+
+                if (isAdminUser())
+                {
+                    ViewBag.displayMenu = "Admin";
+                    return RedirectToAction("Index", "Administrators");
+                }
+                else if (isCustomerUser())
+                {
+                    ViewBag.displayMenu = "Customer";
+                    return RedirectToAction("Index", "Customers");
+                }
+            }
             return View();
         }
 
-        public ActionResult About()
+        public Boolean isAdminUser()
         {
-            ViewBag.Message = "Your application description page.";
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext context = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
 
-            return View();
+                var getRole = UserManager.GetRoles(user.GetUserId());
+                if (getRole[0].ToString() == "Admin")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
         }
-
-        public ActionResult Contact()
+        public Boolean isCustomerUser()
         {
-            ViewBag.Message = "Your contact page.";
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = User.Identity;
+                ApplicationDbContext db = new ApplicationDbContext();
+                var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
-            return View();
+                var getRole = UserManager.GetRoles(user.GetUserId());
+                if (getRole[0].ToString() == "Observee")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return false;
         }
     }
 }

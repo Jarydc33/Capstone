@@ -20,6 +20,13 @@ namespace AllergyFinder.Models
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Allergen> Allergens { get; set; }
+        public DbSet<AllergenJunction> AllergensJunction { get; set; }
+        public DbSet<Reaction> Reactions { get; set; }
+        public DbSet<ReactionJunction> ReactionsJunction { get; set; }
+        public DbSet<LocationComment> LocationComments { get; set; }
+
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
