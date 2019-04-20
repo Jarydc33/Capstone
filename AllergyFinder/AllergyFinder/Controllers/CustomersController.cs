@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AllergyFinder.Models;
+using Microsoft.AspNet.Identity;
 
 namespace AllergyFinder.Controllers
 {
@@ -16,8 +17,22 @@ namespace AllergyFinder.Controllers
 
         public ActionResult Index()
         {
-            var customers = db.Customers.Include(c => c.ApplicationUser);
-            return View(customers.ToList());
+            return View();
+        }
+
+        public ActionResult Create()
+        {
+            Customer customerToAdd = new Customer();
+            return View(customerToAdd);
+        }
+        [HttpPost]
+        public ActionResult Create(Customer customerToAdd)
+        {
+            string userId = User.Identity.GetUserId();
+            customerToAdd.ApplicationUserId = userId;
+            db.Customers.Add(customerToAdd);
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Details(int? id)
@@ -31,27 +46,6 @@ namespace AllergyFinder.Controllers
             {
                 return HttpNotFound();
             }
-            return View(customer);
-        }
-
-        public ActionResult Create()
-        {
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email");
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,FirstName,LastName,Address,City,State,Zip,Latitude,Longitude,ApplicationUserId")] Customer customer)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Customers.Add(customer);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.ApplicationUserId = new SelectList(db.Users, "Id", "Email", customer.ApplicationUserId);
             return View(customer);
         }
 
@@ -72,7 +66,7 @@ namespace AllergyFinder.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,FirstName,LastName,Address,City,State,Zip,Latitude,Longitude,ApplicationUserId")] Customer customer)
+        public ActionResult Edit(Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -104,6 +98,27 @@ namespace AllergyFinder.Controllers
         {
             Customer customer = db.Customers.Find(id);
             db.Customers.Remove(customer);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult LogAllergy()
+        {
+            AddAllergenViewModel model = new AddAllergenViewModel();
+            model.allergens = new SelectList(db.Allergens.ToList(), "id", "KnownAllergies");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LogAllergy(AddAllergenViewModel model)
+        {
+            string userId = User.Identity.GetUserId();
+            Customer user = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
+            AllergenJunction table = new AllergenJunction();
+            //Allergen allergenToAdd = db.Allergens.Where(a => a.id == model.id).FirstOrDefault();
+            table.AllergenId = model.id;
+            table.CustomerId = user.id;
+            db.AllergensJunction.Add(table);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

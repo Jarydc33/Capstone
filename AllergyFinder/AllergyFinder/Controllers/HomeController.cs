@@ -61,7 +61,7 @@ namespace AllergyFinder.Controllers
                 var UserManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(db));
 
                 var getRole = UserManager.GetRoles(user.GetUserId());
-                if (getRole[0].ToString() == "Observee")
+                if (getRole[0].ToString() == "Customer")
                 {
                     return true;
                 }
