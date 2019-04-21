@@ -146,7 +146,9 @@ namespace AllergyFinder.Controllers
             var ingredients = FoodInfoRetrieval.Retrieve(NDBNo);
             ingredients = ingredients.ToLower();
             var allergensFound = FindAllergens(ingredients);
-            return View();
+            FindFoodInfoViewModel model = new FindFoodInfoViewModel();
+            model.allergens = allergensFound;
+            return View(model);
         }
 
         public List<string> FindAllergens(string ingredients)

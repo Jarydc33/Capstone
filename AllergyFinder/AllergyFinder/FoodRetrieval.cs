@@ -12,9 +12,29 @@ namespace AllergyFinder
     {
         public static Item[] Retrieve(string brandName, string foodName)
         {
-            string fullBrandName = brandName.Replace(" ", string.Empty);
-            string fullFoodName = foodName.Replace(" ", string.Empty);
-            string fullName = fullBrandName + "," + fullFoodName;
+            string fullName = "";
+            if(brandName == null && foodName == null)
+            {
+                return null;
+            }
+            if(brandName == null)
+            {
+                string fullFoodName = foodName.Replace(" ", string.Empty);
+                fullName = fullFoodName;
+            }
+            else if(foodName == null)
+            {
+                string fullFoodName = brandName.Replace(" ", string.Empty);
+                fullName = fullFoodName;
+            }
+            else
+            {
+                string fullFoodName = foodName.Replace(" ", string.Empty);
+                string fullBrandName = brandName.Replace(" ", string.Empty);
+                fullName = fullBrandName + "," + fullFoodName;
+            }
+           
+            //string fullName = fullBrandName + "," + fullFoodName;
             string strurltest = "https://api.nal.usda.gov/ndb/search/?format=json&q=" + fullName + "&sort=n&max=25&offset=0&api_key=" + Keys.USDAKey;
             WebRequest requestObject = WebRequest.Create(strurltest);
             requestObject.Method = "GET";
