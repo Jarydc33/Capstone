@@ -17,7 +17,8 @@ namespace AllergyFinder.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            CustomerIndexViewModel customerView = TempData["foods"] as CustomerIndexViewModel;
+            return View(customerView);
         }
 
         public ActionResult Create()
@@ -133,8 +134,32 @@ namespace AllergyFinder.Controllers
         [HttpPost]
         public ActionResult FindFoodItem(FindFoodItemViewModel foodToFind)
         {
-            GetFoodInfo.Retrieve(foodToFind.BrandName,foodToFind.FoodName);
+            var foodRetrieval = FoodRetrieval.Retrieve(foodToFind.BrandName,foodToFind.FoodName);
+            CustomerIndexViewModel foodView = new CustomerIndexViewModel();
+            foodView.retrievedFoods = foodRetrieval;
+            TempData["foods"] = foodView;
             return RedirectToAction("Index");
+        }
+
+        public ActionResult FindFoodInfo(string NDBNo)
+        {
+            var ingredients = FoodInfoRetrieval.Retrieve(NDBNo);
+            var allergensFound = FindAllergens(ingredients);
+            return View();
+        }
+
+        public List<string> FindAllergens(string ingredients)
+        {
+            var knownAllergens = db.Allergens.ToList();
+            List<string> allergensFound = new List<string>();
+            foreach(var allergen in knownAllergens)
+            {
+                if (ingredients.Contains(allergen.KnownAllergies))
+                {
+                    allergensFound.Add(allergen.KnownAllergies);
+                }
+            }
+            return allergensFound;
         }
 
         protected override void Dispose(bool disposing)

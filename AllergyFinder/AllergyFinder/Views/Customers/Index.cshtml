@@ -1,11 +1,38 @@
-﻿@model IEnumerable<AllergyFinder.Models.Customer>
+﻿@model AllergyFinder.Models.CustomerIndexViewModel
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
-@Html.ActionLink("Log a Known Allergy","LogAllergy")
-@Html.ActionLink("Search for an Allergen in a Food","FindFoodItem")
+@Html.ActionLink("Log a Known Allergy", "LogAllergy")
+@Html.ActionLink("Search for an Allergen in a Food", "FindFoodItem")
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Food Name")
+        </th>
+        <th></th>
+
+    </tr>
+    @{
+        if (Model != null && Model.retrievedFoods !=null)
+        {
+            foreach (var item in Model.retrievedFoods)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.name)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Find Allergens", "FindFoodInfo", new { NDBNo = item.ndbno})
+                    </td>
+
+                </tr>
+            }
+        }
+    }
 
 
+</table>

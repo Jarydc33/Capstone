@@ -8,7 +8,7 @@ using System.Web;
 
 namespace AllergyFinder
 {
-    public static class GetFoodInfo
+    public static class FoodRetrieval
     {
         public static Item[] Retrieve(string brandName, string foodName)
         {
@@ -29,13 +29,18 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            var foodRequest = JsonConvert.DeserializeObject<Rootobject>(strresulttest);
+            var foodRequest = JsonConvert.DeserializeObject<FoodInfo>(strresulttest);
+            if(foodRequest.list == null)
+            {
+                return null;
+            }
             return foodRequest.list.item;
+
         }
     }
 
 
-    public class Rootobject
+    public class FoodInfo
     {
         public List list { get; set; }
     }

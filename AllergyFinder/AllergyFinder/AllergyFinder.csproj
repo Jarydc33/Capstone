@@ -190,7 +190,8 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="GetFoodInfo.cs" />
+    <Compile Include="FoodRetrieval.cs" />
+    <Compile Include="FoodInfoRetrieval.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -211,6 +212,7 @@
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\FindFoodItemViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\CustomerIndexViewModel.cs" />
     <Compile Include="Models\LocationComment.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Reaction.cs" />
