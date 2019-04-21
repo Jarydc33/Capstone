@@ -144,6 +144,7 @@ namespace AllergyFinder.Controllers
         public ActionResult FindFoodInfo(string NDBNo)
         {
             var ingredients = FoodInfoRetrieval.Retrieve(NDBNo);
+            ingredients = ingredients.ToLower();
             var allergensFound = FindAllergens(ingredients);
             return View();
         }
@@ -154,7 +155,7 @@ namespace AllergyFinder.Controllers
             List<string> allergensFound = new List<string>();
             foreach(var allergen in knownAllergens)
             {
-                if (ingredients.Contains(allergen.KnownAllergies))
+                if (ingredients.Contains(allergen.KnownAllergies.ToLower()))
                 {
                     allergensFound.Add(allergen.KnownAllergies);
                 }
