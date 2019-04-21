@@ -190,6 +190,7 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="GetFoodInfo.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -198,12 +199,17 @@
     <Compile Include="Migrations\201904191903580_InitialMigration.Designer.cs">
       <DependentUpon>201904191903580_InitialMigration.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904201510289_SeedingDatabase.cs" />
+    <Compile Include="Migrations\201904201510289_SeedingDatabase.Designer.cs">
+      <DependentUpon>201904201510289_SeedingDatabase.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddAllergenViewModel.cs" />
     <Compile Include="Models\Allergen.cs" />
     <Compile Include="Models\AllergenJunction.cs" />
     <Compile Include="Models\Customer.cs" />
+    <Compile Include="Models\FindFoodItemViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LocationComment.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -274,6 +280,7 @@
     <Content Include="Views\Customers\Edit.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Customers\LogAllergy.cshtml" />
+    <Content Include="Views\Customers\FindFoodItem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -294,6 +301,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201904191903580_InitialMigration.resx">
       <DependentUpon>201904191903580_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904201510289_SeedingDatabase.resx">
+      <DependentUpon>201904201510289_SeedingDatabase.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

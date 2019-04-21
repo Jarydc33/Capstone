@@ -115,11 +115,25 @@ namespace AllergyFinder.Controllers
             string userId = User.Identity.GetUserId();
             Customer user = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
             AllergenJunction table = new AllergenJunction();
-            //Allergen allergenToAdd = db.Allergens.Where(a => a.id == model.id).FirstOrDefault();
             table.AllergenId = model.id;
             table.CustomerId = user.id;
             db.AllergensJunction.Add(table);
             db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult FindFoodItem()
+        {
+            FindFoodItemViewModel foodToFind = new FindFoodItemViewModel();
+            AddAllergenViewModel allAllergens = new AddAllergenViewModel();
+            foodToFind.Allergens = allAllergens;
+            foodToFind.Allergens.allergens = new SelectList(db.Allergens.ToList(),"id","KnownAllergies");
+            return View(foodToFind);
+        }
+        [HttpPost]
+        public ActionResult FindFoodItem(FindFoodItemViewModel foodToFind)
+        {
+            GetFoodInfo.Retrieve(foodToFind.BrandName,foodToFind.FoodName);
             return RedirectToAction("Index");
         }
 
