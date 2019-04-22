@@ -3,26 +3,87 @@
     ViewBag.Title = "FindRestaurant";
 }
 
-<h2>FindRestaurant</h2>
+<h2>Find Restaurant</h2>
 
 @using (Html.BeginForm())
 {
-    <div class="form-horizontal">
-        <h4>Customer</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="form-horizontal">
+    <h4>Customer</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.Label("Restaurant Name", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.RestaurantName, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Search" class="btn btn-default" />
-            </div>
+    <div class="form-group">
+        @Html.Label("Restaurant Name", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.RestaurantName, new { htmlAttributes = new { @class = "form-control" } })
         </div>
     </div>
+    <div class="form-group">
+        @Html.DropDownListFor(model => model.Radius, new List<SelectListItem>
+           {
+             new SelectListItem { Text = "5", Value = "5"},
+             new SelectListItem { Text = "10", Value = "10"},
+             new SelectListItem { Text = "25", Value = "25"},
+             new SelectListItem {Text  = "50",Value="50"},
+          }, "Select Mile Radius")
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Search" class="btn btn-default" />
+        </div>
+    </div>
+</div>
 }
+
+<style>
+
+    #map {
+        height: 400px;
+        width: 700px;
+    }
+</style>
+<br />
+<div class="row">
+    <div id="map"></div>
+    <script>
+
+        function initMap() {
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 13,
+                center: new google.maps.LatLng(43.4997, -87.8504),
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+            })
+
+            var infowindow = new google.maps.InfoWindow({});
+
+            var allLatLongs = @Html.Raw(Json.Encode(Model.allRestaurants));
+
+            var marker, i
+
+            for (i = 0; i < allLatLongs.length; i += 2) {
+
+                marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(allLatLongs[i], allLatLongs[i+1]),
+                    map: map,
+                })
+
+                google.maps.event.addListener(
+                    marker,
+                    'click',
+                    (function (marker, i) {
+                return function () {
+                    infowindow.open(map, marker)
+                        }
+            })(marker, i)
+                )
+            }
+        }
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=@Keys.GoogleKey&callback=initMap"
+            async defer></script>
+
+
+</div>

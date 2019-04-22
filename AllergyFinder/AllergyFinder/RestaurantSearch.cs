@@ -10,11 +10,11 @@ namespace AllergyFinder
 {
     public class RestaurantSearch
     {
-        public static Restaurant[] Retrieve(string search, float? latitude, float? longitude)
+        public static Restaurant[] Retrieve(string search, string cityId, string radius)
         {
             string strurltest;
             string formattedName = search.Replace(" ", "%20");
-            strurltest = "https://developers.zomato.com/api/v2.1/search?q=" + search;
+            strurltest = "https://developers.zomato.com/api/v2.1/search?entity_id=" + cityId + "&entity_type=city&q=" + formattedName + "&radius=" + radius;
             
             
             WebRequest requestObject = WebRequest.Create(strurltest);

@@ -150,8 +150,18 @@ namespace AllergyFinder.Controllers
         [HttpPost]
         public ActionResult FindRestaurant(FindRestaurantViewModel search)
         {
-            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName,null,null);
-            return View();
+            
+            string userId = User.Identity.GetUserId();
+            Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
+            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius);
+            float[] temp = new float[(restaurants.Length) * 2];
+            for(int i = 0,j=0; i < restaurants.Length; i++,j+=2)
+            {
+                temp[j] = float.Parse(restaurants[i].restaurant.location.latitude);
+                temp[j+1] = float.Parse(restaurants[i].restaurant.location.longitude);
+            }
+            search.allRestaurants = temp;
+            return View(search);
         }
 
         public ActionResult FindFoodItem()
