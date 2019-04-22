@@ -298,6 +298,7 @@
     <Content Include="Views\Customers\FindFoodItem.cshtml" />
     <Content Include="Views\Customers\FindFoodInfo.cshtml" />
     <Content Include="Views\Customers\FindRestaurant.cshtml" />
+    <Content Include="Views\Customers\LeaveComment.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

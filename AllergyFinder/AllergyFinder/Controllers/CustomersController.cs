@@ -34,7 +34,7 @@ namespace AllergyFinder.Controllers
             float[] coordinates = GeoCoder.GetLatLong(customerToAdd);
             customerToAdd.Latitude = coordinates[0];
             customerToAdd.Longitude = coordinates[1];
-            customerToAdd.City_Id = CitySearch.Retrieve(customerToAdd.Latitude, customerToAdd.Longitude).ToString();
+            customerToAdd.City_Id = CitySearch.Retrieve(customerToAdd.Latitude, customerToAdd.Longitude).ToString(); //make sure to change this when they edit their profile
             db.Customers.Add(customerToAdd);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -103,6 +103,20 @@ namespace AllergyFinder.Controllers
         {
             Customer customer = db.Customers.Find(id);
             db.Customers.Remove(customer);
+            db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult LeaveComment()
+        {
+            LocationComment newComment = new LocationComment();
+            return View(newComment);
+        }
+
+        [HttpPost]
+        public ActionResult LeaveComment(LocationComment commentToAdd)
+        {
+            db.LocationComments.Add(commentToAdd);
             db.SaveChanges();
             return RedirectToAction("Index");
         }
