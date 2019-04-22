@@ -10,6 +10,7 @@ namespace AllergyFinder.Models
     {
         public string RestaurantName { get; set; }
         public string Radius { get; set; }
-        public float[] allRestaurants { get; set; }
+        public float[] AllRestaurants { get; set; }
+        public string CuisineType { get; set; }
     }
 }
