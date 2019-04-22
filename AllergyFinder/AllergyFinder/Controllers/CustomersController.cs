@@ -31,6 +31,10 @@ namespace AllergyFinder.Controllers
         {
             string userId = User.Identity.GetUserId();
             customerToAdd.ApplicationUserId = userId;
+            float[] coordinates = GeoCoder.GetLatLong(customerToAdd);
+            customerToAdd.Latitude = coordinates[0];
+            customerToAdd.Longitude = coordinates[1];
+            customerToAdd.City_Id = CitySearch.Retrieve(customerToAdd.Latitude, customerToAdd.Longitude).ToString();
             db.Customers.Add(customerToAdd);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -121,6 +125,19 @@ namespace AllergyFinder.Controllers
             db.AllergensJunction.Add(table);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult FindRestaurant()
+        {
+            FindRestaurantViewModel search = new FindRestaurantViewModel();
+            return View(search);
+        }
+
+        [HttpPost]
+        public ActionResult FindRestaurant(FindRestaurantViewModel search)
+        {
+            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName,null,null);
+            return View();
         }
 
         public ActionResult FindFoodItem()

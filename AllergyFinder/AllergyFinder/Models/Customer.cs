@@ -19,6 +19,7 @@ namespace AllergyFinder.Models
         public string Zip { get; set; }
         public float? Latitude { get; set; }
         public float? Longitude { get; set; }
+        public string City_Id { get; set; }
 
         [ForeignKey("ApplicationUser")]
         public string ApplicationUserId { get; set; }

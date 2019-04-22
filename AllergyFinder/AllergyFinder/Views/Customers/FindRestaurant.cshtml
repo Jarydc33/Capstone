@@ -1,0 +1,28 @@
+﻿@model AllergyFinder.Models.FindRestaurantViewModel
+@{
+    ViewBag.Title = "FindRestaurant";
+}
+
+<h2>FindRestaurant</h2>
+
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <h4>Customer</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.Label("Restaurant Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.RestaurantName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Search" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
