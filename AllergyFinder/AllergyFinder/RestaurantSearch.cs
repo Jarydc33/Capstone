@@ -10,7 +10,7 @@ namespace AllergyFinder
 {
     public class RestaurantSearch
     {
-        public static Restaurant[] Retrieve(string search, string cityId, string radius,string cuisine)
+        public static Restaurant[] Retrieve(string search, string cityId, string radius, string cuisine)
         {
             string strurltest;
             string formattedName = "";
@@ -18,12 +18,12 @@ namespace AllergyFinder
             {
                 formattedName = search.Replace(" ", "%20");
             }
-            
-            strurltest = "https://developers.zomato.com/api/v2.1/search?entity_id=" + cityId + "&entity_type=city&q=" + formattedName+"&cuisine=" + cuisine + "&radius=" + radius;
-            
-            
+
+            strurltest = "https://developers.zomato.com/api/v2.1/search?entity_id=" + cityId + "&entity_type=city&q=" + formattedName + "&cuisine=" + cuisine + "&radius=" + radius;
+
+
             WebRequest requestObject = WebRequest.Create(strurltest);
-            requestObject.Headers.Add("user-key: "+ Keys.ZomatoKey);
+            requestObject.Headers.Add("user-key: " + Keys.ZomatoKey);
             requestObject.Method = "GET";
             HttpWebResponse responseObject = null;
             responseObject = (HttpWebResponse)requestObject.GetResponse();
@@ -58,7 +58,8 @@ namespace AllergyFinder
         public string id { get; set; }
         public string name { get; set; }
         public Location location { get; set; }
-       
+        public string menu_url { get; set; }
+
     }
 
     public class R

@@ -126,10 +126,11 @@
             var infowindow = new google.maps.InfoWindow();
 
             var allLatLongs = @Html.Raw(Json.Encode(Model.AllRestaurants));
+            var allMenuLinks = @Html.Raw(Json.Encode(Model.MenuLink));
+            var test = allMenuLinks[0];
+            var marker, i, j
 
-            var marker, i
-
-            for (i = 0; i < allLatLongs.length; i += 2) {
+            for (i = 0,j = 0; i < allLatLongs.length; i += 2, j+=1) {
 
                 marker = new google.maps.Marker({
                     position: new google.maps.LatLng(allLatLongs[i], allLatLongs[i+1]),
@@ -138,12 +139,13 @@
                 google.maps.event.addListener(
                     marker,
                     'click',
-                    (function (marker,i) {
+                    (function (marker,i,j) {
                         return function () {
-                            infowindow.setContent('Latitude: ' + allLatLongs[i].toString() + ', Longitude: ' + allLatLongs[i + 1].toString());
+                            infowindow.setContent('Latitude: ' + allLatLongs[i].toString() + ', Longitude: ' + allLatLongs[i + 1].toString() + '\n'
+                                + 'Menu Link: ' + '<a href="' + allMenuLinks[j] + '">' + 'Menu Link' + '</a>');
                             infowindow.open(map, marker);
                         }
-            })(marker, i)
+            })(marker, i,j)
                 )
             }
         }

@@ -155,12 +155,15 @@ namespace AllergyFinder.Controllers
             Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
             var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
             float[] temp = new float[(restaurants.Length) * 2];
+            string[] menuTemp = new string[restaurants.Length];
             for(int i = 0,j=0; i < restaurants.Length; i++,j+=2)
             {
                 temp[j] = float.Parse(restaurants[i].restaurant.location.latitude);
                 temp[j+1] = float.Parse(restaurants[i].restaurant.location.longitude);
+                menuTemp[i] = restaurants[i].restaurant.menu_url;
             }
             search.AllRestaurants = temp;
+            search.MenuLink = menuTemp;
             return View(search);
         }
 
