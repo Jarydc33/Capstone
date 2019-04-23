@@ -121,7 +121,9 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
             })
 
-            var infowindow = new google.maps.InfoWindow({});
+            var contentString = "Test"
+
+            var infowindow = new google.maps.InfoWindow();
 
             var allLatLongs = @Html.Raw(Json.Encode(Model.AllRestaurants));
 
@@ -133,13 +135,13 @@
                     position: new google.maps.LatLng(allLatLongs[i], allLatLongs[i+1]),
                     map: map,
                 })
-
                 google.maps.event.addListener(
                     marker,
                     'click',
-                    (function (marker, i) {
-                return function () {
-                    infowindow.open(map, marker)
+                    (function (marker,i) {
+                        return function () {
+                            infowindow.setContent('Latitude: ' + allLatLongs[i].toString() + ', Longitude: ' + allLatLongs[i + 1].toString());
+                            infowindow.open(map, marker);
                         }
             })(marker, i)
                 )
