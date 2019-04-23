@@ -127,7 +127,7 @@
 
             var allLatLongs = @Html.Raw(Json.Encode(Model.AllRestaurants));
             var allMenuLinks = @Html.Raw(Json.Encode(Model.MenuLink));
-            var test = allMenuLinks[0];
+            var allComments = @Html.Raw(Json.Encode(Model.Comments));
             var marker, i, j
 
             for (i = 0,j = 0; i < allLatLongs.length; i += 2, j+=1) {
@@ -142,7 +142,8 @@
                     (function (marker,i,j) {
                         return function () {
                             infowindow.setContent('Latitude: ' + allLatLongs[i].toString() + ', Longitude: ' + allLatLongs[i + 1].toString() + '\n'
-                                + 'Menu Link: ' + '<a href="' + allMenuLinks[j] + '">' + 'Menu Link' + '</a>');
+                                + 'Menu Link: ' + '<a href="' + allMenuLinks[j] + '">' + 'Menu Link' + '</a>' + '\n'
+                                + 'Most Recent Comment About This Location: ' + allComments[j]);
                             infowindow.open(map, marker);
                         }
             })(marker, i,j)

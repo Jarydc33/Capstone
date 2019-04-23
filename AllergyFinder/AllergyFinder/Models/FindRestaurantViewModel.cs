@@ -13,6 +13,6 @@ namespace AllergyFinder.Models
         public float[] AllRestaurants { get; set; }
         public string CuisineType { get; set; }
         public string[] MenuLink { get; set; }
-        public List<LocationComment> Comments { get; set; }
+        public string[] Comments { get; set; }
     }
 }

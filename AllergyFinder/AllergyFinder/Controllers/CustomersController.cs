@@ -156,14 +156,29 @@ namespace AllergyFinder.Controllers
             var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
             float[] temp = new float[(restaurants.Length) * 2];
             string[] menuTemp = new string[restaurants.Length];
+            string[] commentsTemp = new string[restaurants.Length];
+            //var comments = db.LocationComments.ToList();
+            var comments = GetComments.Retrieve();
             for(int i = 0,j=0; i < restaurants.Length; i++,j+=2)
             {
                 temp[j] = float.Parse(restaurants[i].restaurant.location.latitude);
                 temp[j+1] = float.Parse(restaurants[i].restaurant.location.longitude);
                 menuTemp[i] = restaurants[i].restaurant.menu_url;
+                foreach(var comment in comments)
+                {
+                    if(comment.Latitude == temp[j] && comment.Longitude == temp[j + 1])
+                    {
+                        commentsTemp[i] = comment.Comment;
+                    }
+                    else
+                    {
+                        commentsTemp[i] = "No Comments Saved";
+                    }
+                }
             }
             search.AllRestaurants = temp;
             search.MenuLink = menuTemp;
+            search.Comments = commentsTemp;
             return View(search);
         }
 
