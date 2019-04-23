@@ -9,6 +9,21 @@
     <hr />
     <dl class="dl-horizontal">
         
+        @{ 
+            List<string> allergenOfConcern = new List<string>();
+            foreach(var allergen in Model.userAllergies)
+            {
+                foreach(var foodAllergen in Model.allergens)
+                {
+                    if(allergen.KnownAllergies == foodAllergen)
+                    {
+                        allergenOfConcern.Add(foodAllergen);
+                        <h4 style="color:red">WARNING: This food contains @foodAllergen which you have listed as a known allergy.</h4>
+                    }
+                }
+            }
+        }
+
         <dt>
             @Html.DisplayName("Allergens found in this item")
         </dt>

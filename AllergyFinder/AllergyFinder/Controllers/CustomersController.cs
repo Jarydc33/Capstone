@@ -188,7 +188,11 @@ namespace AllergyFinder.Controllers
             ingredients = ingredients.ToLower();
             var allergensFound = FindAllergens(ingredients);
             FindFoodInfoViewModel model = new FindFoodInfoViewModel();
-            model.allergens = allergensFound;
+            string userId = User.Identity.GetUserId();
+            Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
+            AllergenJunction temp = db.AllergensJunction.Where(a => a.CustomerId == customer.id).FirstOrDefault();
+            model.userAllergies = db.Allergens.Where(a => a.id == temp.AllergenId).ToList();
+            model.allergens = allergensFound.Distinct().ToList();
             return View(model);
         }
 
