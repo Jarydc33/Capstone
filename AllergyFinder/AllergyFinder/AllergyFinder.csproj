@@ -217,6 +217,7 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\CustomerIndexViewModel.cs" />
     <Compile Include="Models\LocationComment.cs" />
+    <Compile Include="Models\LogReactionViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Reaction.cs" />
     <Compile Include="Models\FoodLog.cs" />
@@ -292,6 +293,7 @@
     <Content Include="Views\Customers\FindFoodInfo.cshtml" />
     <Content Include="Views\Customers\FindRestaurant.cshtml" />
     <Content Include="Views\Customers\LeaveComment.cshtml" />
+    <Content Include="Views\Customers\LogReaction.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

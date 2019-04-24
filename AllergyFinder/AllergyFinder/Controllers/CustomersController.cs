@@ -268,7 +268,7 @@ namespace AllergyFinder.Controllers
                     logAllergen.AllergenId = tempId;
                     logAllergen.Total = 1;
                     db.AllergenTotals.Add(logAllergen);
-                    db.SaveChanges();
+                    db.SaveChanges(); // change to async
                 }
                 else
                 {
@@ -277,7 +277,7 @@ namespace AllergyFinder.Controllers
             }
             logger.Reactions = null;
             logger.CustomerId = customer.id;
-            logger.MealId = db.FoodLogs.Where(f => f.CustomerId == customer.id).Select(m => m.MealId).FirstOrDefault();
+            logger.MealId = db.FoodLogs.Where(f => f.CustomerId == customer.id).Max(m => m.MealId);
             if(logger.MealId == null)
             {
                 logger.MealId = 1;
@@ -293,6 +293,51 @@ namespace AllergyFinder.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult LogReaction()
+        {
+            string userId = User.Identity.GetUserId();
+            Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
+            LogReactionViewModel model = new LogReactionViewModel();
+            model.LoggedMeals = new SelectList(db.FoodLogs.Where(f => f.Reactions == null && f.CustomerId == customer.id).ToList(), "id", "MealId");
+            model.Reaction = new SelectList(db.Reactions.ToList(),"id", "CommonReactions");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LogReaction(LogReactionViewModel model)
+        {
+            //currently I am not adding anything to the reactiontotal table
+            string userId = User.Identity.GetUserId();
+            Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
+            var loggedMeal = db.FoodLogs.Where(l => l.id == model.id).FirstOrDefault();
+            List<string> loggedAllergens = loggedMeal.Allergens.Split(',').ToList();
+            loggedAllergens.RemoveAt(loggedAllergens.Count - 1);
+            List<int> allergenId = new List<int>();
+            AllergenReactionJunction toLog = new AllergenReactionJunction();
+            foreach (var allergen in loggedAllergens)
+            {
+                int tempId = db.Allergens.Where(a => a.KnownAllergies == allergen).Select(a => a.id).FirstOrDefault();
+                toLog = db.AllergensReactionsJunction.Where(a => a.CustomerId == customer.id && a.ReactionId == model.reactionId && a.AllergenId == tempId).FirstOrDefault();
+                if(toLog == null)
+                {
+                    AllergenReactionJunction newEntry = new AllergenReactionJunction();
+                    newEntry.CustomerId = customer.id;
+                    newEntry.ReactionId = model.reactionId;
+                    newEntry.AllergenId = tempId;
+                    newEntry.Total = 1;
+                    db.AllergensReactionsJunction.Add(newEntry);
+                    db.SaveChanges(); //change to async
+                }
+                else
+                {
+                    toLog.Total += 1;
+                    db.SaveChanges();
+                }
+            }
+           
+            TempData["foods"] = null;
+            return RedirectToAction("Index");
+        }
        
     }
 }
