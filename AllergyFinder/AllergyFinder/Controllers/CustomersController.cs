@@ -312,6 +312,7 @@ namespace AllergyFinder.Controllers
             var loggedMeal = db.FoodLogs.Where(l => l.id == model.id).FirstOrDefault();
             List<string> loggedAllergens = loggedMeal.Allergens.Split(',').ToList();
             loggedAllergens.RemoveAt(loggedAllergens.Count - 1);
+            loggedMeal.Reactions = "Logged";
             List<int> allergenId = new List<int>();
             AllergenReactionJunction toLog = new AllergenReactionJunction();
             foreach (var allergen in loggedAllergens)
@@ -334,7 +335,6 @@ namespace AllergyFinder.Controllers
                     db.SaveChanges();
                 }
             }
-           
             TempData["foods"] = null;
             return RedirectToAction("Index");
         }
