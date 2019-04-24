@@ -1,0 +1,36 @@
+﻿@model AllergyFinder.Models.AllergenStatsViewModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Allergan Stat Results</h2>
+
+<div>
+    <h4>Allergens that have the top chance of causing an allergy</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        
+        <script>
+
+            var allResults = @Html.Raw(Json.Encode(Model.allResults));
+            var topResults = @Html.Raw(Json.Encode(Model.topResults));
+
+
+            for (let i = 0; i < @Model.topResultsCount; i++) {
+                @{ 
+
+                }
+            }
+
+        </script>
+        @*<dt>
+            @Html.DisplayNameFor(model => model.Longitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Longitude)
+        </dd>*@
+
+    </dl>
+</div>

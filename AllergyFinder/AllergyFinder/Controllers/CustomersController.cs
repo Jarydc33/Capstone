@@ -370,6 +370,32 @@ namespace AllergyFinder.Controllers
                 db.SaveChanges();
             }
         }
+
+        public ActionResult AllergenStats()
+        {
+            List<AllergenReactionJunction> allResults = new List<AllergenReactionJunction>();
+            allResults = db.AllergensReactionsJunction.ToList();
+            foreach (var item in allResults)
+            {
+                item.Allergen = db.Allergens.Where(a => a.id == item.AllergenId).FirstOrDefault();
+            }
+
+            List<AllergenReactionJunction> topResults = new List<AllergenReactionJunction>();
+            int numReactions = db.ReactionTotals.Count();
+            var reactionIds = db.ReactionTotals.Select(r => r.ReactionId).Distinct().ToList();
+
+            foreach(var reaction in reactionIds)
+            {
+                var maxValue = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction).Max(a => a.Percentage);
+                topResults = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction && a.Percentage == maxValue).ToList();
+            }
+            AllergenStatsViewModel model = new AllergenStatsViewModel();
+            model.allResults = allResults;
+            model.topResults = topResults;
+            model.allResultsCount = allResults.Count;
+            model.topResultsCount = topResults.Count;
+            return View(model);
+        }
        
     }
 }

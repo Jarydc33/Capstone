@@ -217,6 +217,7 @@
     <Compile Include="Models\AddAllergenViewModel.cs" />
     <Compile Include="Models\Allergen.cs" />
     <Compile Include="Models\AllergenJunction.cs" />
+    <Compile Include="Models\AllergenStatsViewModel.cs" />
     <Compile Include="Models\AllergenTotal.cs" />
     <Compile Include="Models\Customer.cs" />
     <Compile Include="Models\FindFoodInfoViewModel.cs" />
@@ -302,6 +303,7 @@
     <Content Include="Views\Customers\FindRestaurant.cshtml" />
     <Content Include="Views\Customers\LeaveComment.cshtml" />
     <Content Include="Views\Customers\LogReaction.cshtml" />
+    <Content Include="Views\Customers\AllergenStats.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
