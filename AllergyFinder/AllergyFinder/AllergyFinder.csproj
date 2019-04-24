@@ -204,6 +204,14 @@
     <Compile Include="Migrations\201904241231269_RemaakingDatabase.Designer.cs">
       <DependentUpon>201904241231269_RemaakingDatabase.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904241555104_AddedPercentage.cs" />
+    <Compile Include="Migrations\201904241555104_AddedPercentage.Designer.cs">
+      <DependentUpon>201904241555104_AddedPercentage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201904241846008_FloatToDouble.cs" />
+    <Compile Include="Migrations\201904241846008_FloatToDouble.Designer.cs">
+      <DependentUpon>201904241846008_FloatToDouble.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddAllergenViewModel.cs" />
@@ -314,6 +322,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201904241231269_RemaakingDatabase.resx">
       <DependentUpon>201904241231269_RemaakingDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904241555104_AddedPercentage.resx">
+      <DependentUpon>201904241555104_AddedPercentage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904241846008_FloatToDouble.resx">
+      <DependentUpon>201904241846008_FloatToDouble.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

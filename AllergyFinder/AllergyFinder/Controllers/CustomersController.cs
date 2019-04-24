@@ -305,8 +305,7 @@ namespace AllergyFinder.Controllers
 
         [HttpPost]
         public ActionResult LogReaction(LogReactionViewModel model)
-        {
-            //currently I am not adding anything to the reactiontotal table
+        {            
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
             var loggedMeal = db.FoodLogs.Where(l => l.id == model.id).FirstOrDefault();
@@ -315,6 +314,23 @@ namespace AllergyFinder.Controllers
             loggedMeal.Reactions = "Logged";
             List<int> allergenId = new List<int>();
             AllergenReactionJunction toLog = new AllergenReactionJunction();
+
+            ReactionTotal reactionTotal = db.ReactionTotals.Where(r => r.ReactionId == model.reactionId).FirstOrDefault();
+            if (reactionTotal == null)
+            {
+                ReactionTotal newReaction = new ReactionTotal();
+                newReaction.CustomerId = customer.id;
+                newReaction.ReactionId = model.reactionId;
+                newReaction.Total = 1;
+                db.ReactionTotals.Add(newReaction);
+                db.SaveChanges();
+            }
+            else
+            {
+                reactionTotal.Total += 1;
+                db.SaveChanges();
+            }
+
             foreach (var allergen in loggedAllergens)
             {
                 int tempId = db.Allergens.Where(a => a.KnownAllergies == allergen).Select(a => a.id).FirstOrDefault();
@@ -335,8 +351,24 @@ namespace AllergyFinder.Controllers
                     db.SaveChanges();
                 }
             }
+            DetermineAllergy(model.reactionId);
             TempData["foods"] = null;
             return RedirectToAction("Index");
+        }
+
+        public void DetermineAllergy(int reactionId) //this will eventually change to a list of ints
+        {
+            ReactionTotal lookupReactionTotal = db.ReactionTotals.Where(r => r.ReactionId == reactionId).FirstOrDefault();
+            var reactions = db.AllergensReactionsJunction.Where(a => a.ReactionId == reactionId).ToList();
+            List<float> percentages = new List<float>();
+            foreach(var item in reactions)
+            {
+
+                double temp = Math.Round((double)item.Total / lookupReactionTotal.Total,3);
+                temp *= 100;
+                item.Percentage = temp;
+                db.SaveChanges();
+            }
         }
        
     }
