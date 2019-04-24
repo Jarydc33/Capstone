@@ -7,21 +7,20 @@ using System.Web;
 
 namespace AllergyFinder.Models
 {
-    public class ReactionJunction
+    public class FoodLog
     {
+
         [Key]
         public int id { get; set; }
 
-        [ForeignKey("Reaction")]
-        public int ReactionId { get; set; }
-        public Reaction Reaction { get; set; }
+        public string Reactions { get; set; }
 
-        [ForeignKey("Allergen")]
-        public int AllergenId { get; set; }
-        public Allergen Allergen { get; set; }
+        public string Allergens { get; set; }
 
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
+
+        public int? MealId { get; set; }
     }
 }

@@ -3,7 +3,7 @@ namespace AllergyFinder.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialMigration : DbMigration
+    public partial class RemaakingDatabase : DbMigration
     {
         public override void Up()
         {
@@ -43,6 +43,7 @@ namespace AllergyFinder.Migrations
                         Zip = c.String(),
                         Latitude = c.Single(),
                         Longitude = c.Single(),
+                        City_Id = c.String(),
                         ApplicationUserId = c.String(maxLength: 128),
                     })
                 .PrimaryKey(t => t.id)
@@ -108,15 +109,22 @@ namespace AllergyFinder.Migrations
                 .Index(t => t.RoleId);
             
             CreateTable(
-                "dbo.LocationComments",
+                "dbo.AllergenReactionJunctions",
                 c => new
                     {
                         id = c.Int(nullable: false, identity: true),
-                        Latitude = c.Single(),
-                        Longitude = c.Single(),
-                        Comment = c.String(),
+                        ReactionId = c.Int(),
+                        AllergenId = c.Int(nullable: false),
+                        CustomerId = c.Int(nullable: false),
+                        Total = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.id);
+                .PrimaryKey(t => t.id)
+                .ForeignKey("dbo.Allergens", t => t.AllergenId, cascadeDelete: true)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
+                .ForeignKey("dbo.Reactions", t => t.ReactionId)
+                .Index(t => t.ReactionId)
+                .Index(t => t.AllergenId)
+                .Index(t => t.CustomerId);
             
             CreateTable(
                 "dbo.Reactions",
@@ -128,20 +136,58 @@ namespace AllergyFinder.Migrations
                 .PrimaryKey(t => t.id);
             
             CreateTable(
-                "dbo.ReactionJunctions",
+                "dbo.AllergenTotals",
                 c => new
                     {
                         id = c.Int(nullable: false, identity: true),
-                        ReactionId = c.Int(nullable: false),
                         AllergenId = c.Int(nullable: false),
                         CustomerId = c.Int(nullable: false),
+                        Total = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.id)
                 .ForeignKey("dbo.Allergens", t => t.AllergenId, cascadeDelete: true)
                 .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
+                .Index(t => t.AllergenId)
+                .Index(t => t.CustomerId);
+            
+            CreateTable(
+                "dbo.FoodLogs",
+                c => new
+                    {
+                        id = c.Int(nullable: false, identity: true),
+                        Reactions = c.String(),
+                        Allergens = c.String(),
+                        CustomerId = c.Int(nullable: false),
+                        MealId = c.Int(),
+                    })
+                .PrimaryKey(t => t.id)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
+                .Index(t => t.CustomerId);
+            
+            CreateTable(
+                "dbo.LocationComments",
+                c => new
+                    {
+                        id = c.Int(nullable: false, identity: true),
+                        Latitude = c.Single(),
+                        Longitude = c.Single(),
+                        Comment = c.String(),
+                    })
+                .PrimaryKey(t => t.id);
+            
+            CreateTable(
+                "dbo.ReactionTotals",
+                c => new
+                    {
+                        id = c.Int(nullable: false, identity: true),
+                        ReactionId = c.Int(nullable: false),
+                        CustomerId = c.Int(nullable: false),
+                        Total = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.id)
+                .ForeignKey("dbo.Customers", t => t.CustomerId, cascadeDelete: true)
                 .ForeignKey("dbo.Reactions", t => t.ReactionId, cascadeDelete: true)
                 .Index(t => t.ReactionId)
-                .Index(t => t.AllergenId)
                 .Index(t => t.CustomerId);
             
             CreateTable(
@@ -159,9 +205,14 @@ namespace AllergyFinder.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
-            DropForeignKey("dbo.ReactionJunctions", "ReactionId", "dbo.Reactions");
-            DropForeignKey("dbo.ReactionJunctions", "CustomerId", "dbo.Customers");
-            DropForeignKey("dbo.ReactionJunctions", "AllergenId", "dbo.Allergens");
+            DropForeignKey("dbo.ReactionTotals", "ReactionId", "dbo.Reactions");
+            DropForeignKey("dbo.ReactionTotals", "CustomerId", "dbo.Customers");
+            DropForeignKey("dbo.FoodLogs", "CustomerId", "dbo.Customers");
+            DropForeignKey("dbo.AllergenTotals", "CustomerId", "dbo.Customers");
+            DropForeignKey("dbo.AllergenTotals", "AllergenId", "dbo.Allergens");
+            DropForeignKey("dbo.AllergenReactionJunctions", "ReactionId", "dbo.Reactions");
+            DropForeignKey("dbo.AllergenReactionJunctions", "CustomerId", "dbo.Customers");
+            DropForeignKey("dbo.AllergenReactionJunctions", "AllergenId", "dbo.Allergens");
             DropForeignKey("dbo.AllergenJunctions", "CustomerId", "dbo.Customers");
             DropForeignKey("dbo.Customers", "ApplicationUserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.AspNetUsers");
@@ -169,9 +220,14 @@ namespace AllergyFinder.Migrations
             DropForeignKey("dbo.AspNetUserClaims", "UserId", "dbo.AspNetUsers");
             DropForeignKey("dbo.AllergenJunctions", "AllergenId", "dbo.Allergens");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
-            DropIndex("dbo.ReactionJunctions", new[] { "CustomerId" });
-            DropIndex("dbo.ReactionJunctions", new[] { "AllergenId" });
-            DropIndex("dbo.ReactionJunctions", new[] { "ReactionId" });
+            DropIndex("dbo.ReactionTotals", new[] { "CustomerId" });
+            DropIndex("dbo.ReactionTotals", new[] { "ReactionId" });
+            DropIndex("dbo.FoodLogs", new[] { "CustomerId" });
+            DropIndex("dbo.AllergenTotals", new[] { "CustomerId" });
+            DropIndex("dbo.AllergenTotals", new[] { "AllergenId" });
+            DropIndex("dbo.AllergenReactionJunctions", new[] { "CustomerId" });
+            DropIndex("dbo.AllergenReactionJunctions", new[] { "AllergenId" });
+            DropIndex("dbo.AllergenReactionJunctions", new[] { "ReactionId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
@@ -181,9 +237,12 @@ namespace AllergyFinder.Migrations
             DropIndex("dbo.AllergenJunctions", new[] { "AllergenId" });
             DropIndex("dbo.AllergenJunctions", new[] { "CustomerId" });
             DropTable("dbo.AspNetRoles");
-            DropTable("dbo.ReactionJunctions");
-            DropTable("dbo.Reactions");
+            DropTable("dbo.ReactionTotals");
             DropTable("dbo.LocationComments");
+            DropTable("dbo.FoodLogs");
+            DropTable("dbo.AllergenTotals");
+            DropTable("dbo.Reactions");
+            DropTable("dbo.AllergenReactionJunctions");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");

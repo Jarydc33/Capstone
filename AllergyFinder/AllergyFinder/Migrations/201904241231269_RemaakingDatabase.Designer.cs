@@ -7,13 +7,13 @@ namespace AllergyFinder.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class SeedingDatabase : IMigrationMetadata
+    public sealed partial class RemaakingDatabase : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(SeedingDatabase));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(RemaakingDatabase));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904201510289_SeedingDatabase"; }
+            get { return "201904241231269_RemaakingDatabase"; }
         }
         
         string IMigrationMetadata.Source

@@ -8,7 +8,9 @@
 @Html.ActionLink("Log a Known Allergy", "LogAllergy") |
 @Html.ActionLink("Search for an Allergen in a Food", "FindFoodItem") |
 @Html.ActionLink("Search for a Restaurant", "FindRestaurant") |
-@Html.ActionLink("Leave a Comment About a Location", "LeaveComment")
+@Html.ActionLink("Leave a Comment About a Location", "LeaveComment") |
+@Html.ActionLink("Log a Meal", "LogMeal") |
+@Html.ActionLink("Log a Reaction", "LogReaction") |
 
 <table class="table">
     <tr>
@@ -28,7 +30,10 @@
                         @Html.DisplayFor(modelItem => item.name)
                     </td>
                     <td>
-                        @Html.ActionLink("Find Allergens", "FindFoodInfo", new { NDBNo = item.ndbno})
+                        @Html.ActionLink("Find Allergens", "FindFoodInfo", new { NDBNo = item.ndbno, route = 0})
+                    </td>
+                    <td>
+                        @Html.ActionLink("Log This Food", "FindFoodInfo", new { NDBNo = item.ndbno, route = 1 })
                     </td>
 
                 </tr>

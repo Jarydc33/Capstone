@@ -24,8 +24,11 @@ namespace AllergyFinder.Models
         public DbSet<Allergen> Allergens { get; set; }
         public DbSet<AllergenJunction> AllergensJunction { get; set; }
         public DbSet<Reaction> Reactions { get; set; }
-        public DbSet<ReactionJunction> ReactionsJunction { get; set; }
+        public DbSet<AllergenReactionJunction> AllergensReactionsJunction { get; set; }
         public DbSet<LocationComment> LocationComments { get; set; }
+        public DbSet<AllergenTotal> AllergenTotals { get; set; }
+        public DbSet<ReactionTotal> ReactionTotals { get; set; }
+        public DbSet<FoodLog>FoodLogs { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

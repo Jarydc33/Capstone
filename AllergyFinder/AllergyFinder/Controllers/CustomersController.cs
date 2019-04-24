@@ -157,7 +157,6 @@ namespace AllergyFinder.Controllers
             float[] temp = new float[(restaurants.Length) * 2];
             string[] menuTemp = new string[restaurants.Length];
             string[] commentsTemp = new string[restaurants.Length];
-            //var comments = db.LocationComments.ToList();
             var comments = GetComments.Retrieve();
             for(int i = 0,j=0; i < restaurants.Length; i++,j+=2)
             {
@@ -200,21 +199,35 @@ namespace AllergyFinder.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult FindFoodInfo(string NDBNo)
+        public ActionResult FindFoodInfo(string NDBNo, int route)
         {
             var ingredients = FoodInfoRetrieval.Retrieve(NDBNo);
             ingredients = ingredients.ToLower();
-            var allergensFound = FindAllergens(ingredients);
+            List<string> allergensFound = new List<string>();
+            if (route == 1)
+            {
+                allergensFound = FindAllergens(ingredients, true);
+                TempData["foundAllergies"] = allergensFound;
+                return RedirectToAction("LogFood","Customers");
+            }
+            allergensFound = FindAllergens(ingredients, false);
             FindFoodInfoViewModel model = new FindFoodInfoViewModel();
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
             AllergenJunction temp = db.AllergensJunction.Where(a => a.CustomerId == customer.id).FirstOrDefault();
-            model.userAllergies = db.Allergens.Where(a => a.id == temp.AllergenId).ToList();
+            try
+            {
+                model.userAllergies = db.Allergens.Where(a => a.id == temp.AllergenId).ToList();
+            }
+            catch
+            {
+
+            }
             model.allergens = allergensFound.Distinct().ToList();
             return View(model);
         }
 
-        public List<string> FindAllergens(string ingredients)
+        public List<string> FindAllergens(string ingredients, bool logger)
         {
             var knownAllergens = db.Allergens.ToList();
             List<string> allergensFound = new List<string>();
@@ -223,18 +236,63 @@ namespace AllergyFinder.Controllers
                 if (ingredients.Contains(allergen.KnownAllergies.ToLower()))
                 {
                     allergensFound.Add(allergen.KnownAllergies);
+                    if (logger)
+                    {
+                        string allergyId = db.Allergens.Where(a => a.KnownAllergies == allergen.KnownAllergies).Select(a => a.id).FirstOrDefault().ToString();
+                        allergensFound.Add(allergyId);
+                    }
+                    
                 }
             }
             return allergensFound;
         }
 
-        protected override void Dispose(bool disposing)
+        public ActionResult LogFood() //should I keep a db of all past meals? Also, give the option of viewing ingredients and THEN logging the food
         {
-            if (disposing)
+            List<string> allergensToLog = TempData["foundAllergies"] as List<string>;
+            List<string> editedAllergens = allergensToLog.Distinct().ToList();
+            string userId = User.Identity.GetUserId();
+            Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
+            FoodLog logger = new FoodLog();
+            AllergenTotal logAllergen = new AllergenTotal();
+            
+
+            for(int i = 0, j = 1; i < editedAllergens.Count; i += 2, j+=2)
             {
-                db.Dispose();
+                logger.Allergens += editedAllergens[i] + ",";
+                int tempId = int.Parse(editedAllergens[j]);
+                var temp = db.AllergenTotals.Where(a => a.CustomerId == customer.id && a.AllergenId == tempId).FirstOrDefault();
+                if(temp == null)
+                {
+                    logAllergen.CustomerId = customer.id;
+                    logAllergen.AllergenId = tempId;
+                    logAllergen.Total = 1;
+                    db.AllergenTotals.Add(logAllergen);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    temp.Total += 1;
+                }
             }
-            base.Dispose(disposing);
+            logger.Reactions = null;
+            logger.CustomerId = customer.id;
+            logger.MealId = db.FoodLogs.Where(f => f.CustomerId == customer.id).Select(m => m.MealId).FirstOrDefault();
+            if(logger.MealId == null)
+            {
+                logger.MealId = 1;
+            }
+            else
+            {
+                logger.MealId++;
+            }
+
+            db.FoodLogs.Add(logger);
+            db.SaveChanges();
+            TempData["foods"] = null;
+            return RedirectToAction("Index");
         }
+
+       
     }
 }

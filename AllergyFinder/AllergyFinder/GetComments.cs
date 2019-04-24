@@ -33,11 +33,4 @@ namespace AllergyFinder
         }
     }
     
-    //public class Lo
-    //{
-    //    public float? Latitude { get; set; }
-    //    public float? Longitude { get; set; }
-    //    public string Comment { get; set; }
-    //}
-    
 }
