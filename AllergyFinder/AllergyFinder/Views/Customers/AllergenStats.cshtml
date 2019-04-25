@@ -9,26 +9,18 @@
 <div>
     <h4>Allergens that have the top chance of causing an allergy</h4>
     <hr />
-    <dl class="dl-horizontal">
-        
-        <script>
+    <table>
+        @foreach (var line in Model.results)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => line);
+                </td>
+            </tr>
+        }
 
-            var allResults = @Html.Raw(Json.Encode(Model.allResults));
-            var topResults = @Html.Raw(Json.Encode(Model.topResults));
 
-            allResults[0].Allergen.KnownAllergies;
-            for (let i = 0; i < ; i++) {
-                
-            }
 
-        </script>
-        @*<dt>
-            @Html.DisplayNameFor(model => model.Longitude)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Longitude)
-        </dd>*@
-
-    </dl>
+    </table>
 </div>

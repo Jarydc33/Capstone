@@ -374,16 +374,15 @@ namespace AllergyFinder.Controllers
         public ActionResult AllergenStats()
         {
             AllergenStatsViewModel model = new AllergenStatsViewModel();
+            string test = "";
             var tempAllResults = db.AllergensReactionsJunction.ToList();
             string[] allResults = new string[tempAllResults.Count];
             foreach (var item in tempAllResults)
             {
                 item.Allergen = db.Allergens.Where(a => a.id == item.AllergenId).FirstOrDefault();
-                model.allResultsAllergenNames.Add(item.Allergen.KnownAllergies);
-                string temp = db.Reactions.Where(r => r.id == item.ReactionId).Select(r => r.CommonReactions).FirstOrDefault();
-                model.allResultsReactionNames.Add(temp);
-                model.allResultsPercentages.Add(item.Percentage);
-
+                string reaction = db.Reactions.Where(r => r.id == item.ReactionId).Select(r => r.CommonReactions).FirstOrDefault();
+                test = item.Allergen.KnownAllergies + " has a " + item.Percentage + "% chance of causing " + reaction;
+                model.results.Add(test);
             }
 
             //List<AllergenReactionJunction> topResults = new List<AllergenReactionJunction>();
@@ -397,8 +396,9 @@ namespace AllergyFinder.Controllers
             //}
             
             //model.allResults = tempAllResults;
-            //model.topResults = topResults;
-            model.allResultsCount = tempAllResults.Count;
+            ////model.topResults = topResults;
+            //model.allResultsCount = tempAllResults.Count;
+            //model.results = re;
             //model.topResultsCount = topResults.Count;
             return View(model);
         }
