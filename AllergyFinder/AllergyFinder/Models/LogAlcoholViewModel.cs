@@ -7,6 +7,7 @@ namespace AllergyFinder.Models
 {
     public class LogAlcoholViewModel
     {
-        public string beerName { get; set; }
+        public string BeerName { get; set; }
+        public BeerClass1[] Beers;
     }
 }

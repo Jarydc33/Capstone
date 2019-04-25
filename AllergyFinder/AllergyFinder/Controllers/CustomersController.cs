@@ -231,7 +231,7 @@ namespace AllergyFinder.Controllers
         {
             var knownAllergens = db.Allergens.ToList();
             List<string> allergensFound = new List<string>();
-            foreach(var allergen in knownAllergens)
+            foreach(var allergen in knownAllergens) //fix this to not go through whole list?
             {
                 if (ingredients.Contains(allergen.KnownAllergies.ToLower()))
                 {
@@ -247,10 +247,34 @@ namespace AllergyFinder.Controllers
             return allergensFound;
         }
 
-        public ActionResult LogFood() //should I keep a db of all past meals? Also, give the option of viewing ingredients and THEN logging the food
+        public ActionResult LogFood(int? beerId) //should I keep a db of all past meals? Also, give the option of viewing ingredients and THEN logging the food
         {
-            List<string> allergensToLog = TempData["foundAllergies"] as List<string>;
-            List<string> editedAllergens = allergensToLog.Distinct().ToList();
+            List<string> editedAllergens = new List<string>();
+            if (beerId != 0)
+            {
+                BeerClass1[] beers = TempData["BeerIngredients"] as BeerClass1[];
+                BeerClass1 selectedBeer = beers.Where(a => a.id == beerId).FirstOrDefault();
+                string ingredients = "";
+                if (selectedBeer.ingredients.hops != null)
+                {
+                    ingredients += "hops, ";
+                }
+                if(selectedBeer.ingredients.malt != null)
+                {
+                    ingredients += "malt, ";
+                }
+                if(selectedBeer.ingredients.yeast != null)
+                {
+                    ingredients += "yeast, ";
+                }
+                editedAllergens = FindAllergens(ingredients, true);
+            }
+            else
+            {
+                List<string> allergensToLog = TempData["foundAllergies"] as List<string>;
+                editedAllergens = allergensToLog.Distinct().ToList();
+            }            
+                                  
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
             FoodLog logger = new FoodLog();
@@ -406,14 +430,15 @@ namespace AllergyFinder.Controllers
         public ActionResult LogAlcohol()
         {
             LogAlcoholViewModel model = new LogAlcoholViewModel();
+            model.Beers = null;
             return View(model);
         }
 
         [HttpPost]
         public ActionResult LogAlcohol(LogAlcoholViewModel model)
         {
-            var beers = BeerRetriever.Retrieve(model.beerName);
-            return View();
+            model.Beers = BeerRetriever.Retrieve(model.BeerName);
+            return View(model);
         }
        
     }

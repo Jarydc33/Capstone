@@ -27,14 +27,15 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            var beerRequest = JsonConvert.DeserializeObject<Rootobject>(strresulttest);
-            return beerRequest.Beer;
+            var beerRequest = JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest);
+            return beerRequest;
 
         }
     }
 
     public class BeerClass1
     {
+        public int id { get; set; }
         public string name { get; set; }        
         public Ingredients ingredients { get; set; }
     }

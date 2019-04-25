@@ -49,7 +49,10 @@ namespace AllergyFinder.Migrations
             //    new Allergen() { id = 31, KnownAllergies = "Tuna" },
             //    new Allergen() { id = 32, KnownAllergies = "Salmon" },
             //    new Allergen() { id = 33, KnownAllergies = "Tilapia" },
-            //    new Allergen() { id = 34, KnownAllergies = "Cheese" }
+            //    new Allergen() { id = 34, KnownAllergies = "Cheese" },
+            //    new Allergen() { id = 31, KnownAllergies = "Hops" },
+            //    new Allergen() { id = 32, KnownAllergies = "Malt" },
+            //    new Allergen() { id = 33, KnownAllergies = "Yeast" }
             //);
 
             //context.Reactions.AddOrUpdate(x => x.id,
