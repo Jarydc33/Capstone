@@ -402,6 +402,19 @@ namespace AllergyFinder.Controllers
             //model.topResultsCount = topResults.Count;
             return View(model);
         }
+
+        public ActionResult LogAlcohol()
+        {
+            LogAlcoholViewModel model = new LogAlcoholViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LogAlcohol(LogAlcoholViewModel model)
+        {
+            var beers = BeerRetriever.Retrieve(model.beerName);
+            return View();
+        }
        
     }
 }

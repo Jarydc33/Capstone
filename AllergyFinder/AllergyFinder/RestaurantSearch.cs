@@ -45,6 +45,7 @@ namespace AllergyFinder
     public class Rootobject
     {
         public Restaurant[] restaurants { get; set; }
+        public BeerClass1[] Beer { get; set; }
     }
 
     public class Restaurant

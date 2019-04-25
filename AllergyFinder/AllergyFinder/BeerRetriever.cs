@@ -10,7 +10,7 @@ namespace AllergyFinder
 {
     public class BeerRetriever
     {
-        public static Item[] Retrieve(string beerName)
+        public static BeerClass1[] Retrieve(string beerName)
         {
             string editedBeerName = beerName.Replace(" ", "_");
             string strurltest = "https://api.punkapi.com/v2/beers?beer_name=" + beerName;
@@ -27,9 +27,33 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            var beerRequest = JsonConvert.DeserializeObject<FoodInfo>(strresulttest);
-            return null;
+            var beerRequest = JsonConvert.DeserializeObject<Rootobject>(strresulttest);
+            return beerRequest.Beer;
 
         }
     }
+
+    public class BeerClass1
+    {
+        public string name { get; set; }        
+        public Ingredients ingredients { get; set; }
+    }
+
+    public class Ingredients
+    {
+        public Malt[] malt { get; set; }
+        public Hop[] hops { get; set; }
+        public string yeast { get; set; }
+    }
+
+    public class Malt
+    {
+        public string name { get; set; }
+    }
+    public class Hop
+    {
+        public string name { get; set; }
+    }
+
+
 }
