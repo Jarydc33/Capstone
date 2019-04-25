@@ -373,27 +373,33 @@ namespace AllergyFinder.Controllers
 
         public ActionResult AllergenStats()
         {
-            List<AllergenReactionJunction> allResults = new List<AllergenReactionJunction>();
-            allResults = db.AllergensReactionsJunction.ToList();
-            foreach (var item in allResults)
+            AllergenStatsViewModel model = new AllergenStatsViewModel();
+            var tempAllResults = db.AllergensReactionsJunction.ToList();
+            string[] allResults = new string[tempAllResults.Count];
+            foreach (var item in tempAllResults)
             {
                 item.Allergen = db.Allergens.Where(a => a.id == item.AllergenId).FirstOrDefault();
+                model.allResultsAllergenNames.Add(item.Allergen.KnownAllergies);
+                string temp = db.Reactions.Where(r => r.id == item.ReactionId).Select(r => r.CommonReactions).FirstOrDefault();
+                model.allResultsReactionNames.Add(temp);
+                model.allResultsPercentages.Add(item.Percentage);
+
             }
 
-            List<AllergenReactionJunction> topResults = new List<AllergenReactionJunction>();
-            int numReactions = db.ReactionTotals.Count();
-            var reactionIds = db.ReactionTotals.Select(r => r.ReactionId).Distinct().ToList();
+            //List<AllergenReactionJunction> topResults = new List<AllergenReactionJunction>();
+            //int numReactions = db.ReactionTotals.Count();
+            //var reactionIds = db.ReactionTotals.Select(r => r.ReactionId).Distinct().ToList();
 
-            foreach(var reaction in reactionIds)
-            {
-                var maxValue = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction).Max(a => a.Percentage);
-                topResults = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction && a.Percentage == maxValue).ToList();
-            }
-            AllergenStatsViewModel model = new AllergenStatsViewModel();
-            model.allResults = allResults;
-            model.topResults = topResults;
-            model.allResultsCount = allResults.Count;
-            model.topResultsCount = topResults.Count;
+            //foreach(var reaction in reactionIds)
+            //{
+            //    var maxValue = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction).Max(a => a.Percentage);
+            //    topResults = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction && a.Percentage == maxValue).ToList();
+            //}
+            
+            //model.allResults = tempAllResults;
+            //model.topResults = topResults;
+            model.allResultsCount = tempAllResults.Count;
+            //model.topResultsCount = topResults.Count;
             return View(model);
         }
        
