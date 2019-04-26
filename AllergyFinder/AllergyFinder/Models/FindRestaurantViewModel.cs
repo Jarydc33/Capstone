@@ -12,7 +12,6 @@ namespace AllergyFinder.Models
         public string Radius { get; set; }
         public float[] AllRestaurants { get; set; }
         public string CuisineType { get; set; }
-        public string[] MenuLink { get; set; }
         public string[] Comments { get; set; }
         public int? RestaurantId { get; set; }
         public float? Latitude { get; set; }

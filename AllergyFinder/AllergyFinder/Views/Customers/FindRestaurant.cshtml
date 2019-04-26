@@ -137,7 +137,6 @@
             var infowindow = new google.maps.InfoWindow();
 
             var allLatLongs = @Html.Raw(Json.Encode(Model.AllRestaurants));
-            var allMenuLinks = @Html.Raw(Json.Encode(Model.MenuLink));
             var allComments = @Html.Raw(Json.Encode(Model.Comments));
             var restaurantId = @Html.Raw(Json.Encode(Model.RestaurantId));
             var marker, i, j

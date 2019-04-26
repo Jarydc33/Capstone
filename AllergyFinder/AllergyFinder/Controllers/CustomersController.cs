@@ -131,14 +131,21 @@ namespace AllergyFinder.Controllers
         [HttpPost]
         public ActionResult LogAllergy(AddAllergenViewModel model)
         {
-            string userId = User.Identity.GetUserId();
-            Customer user = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
+            var customer = GetCustomer();
             AllergenJunction table = new AllergenJunction();
-            table.AllergenId = model.id;
-            table.CustomerId = user.id;
-            db.AllergensJunction.Add(table);
-            db.SaveChanges();
-            return RedirectToAction("Index");
+            table = db.AllergensJunction.Where(a => a.CustomerId == customer.id && a.AllergenId == model.id).FirstOrDefault();
+            if(table == null)
+            {
+                table = new AllergenJunction();
+                table.AllergenId = model.id;
+                table.CustomerId = customer.id;
+                db.AllergensJunction.Add(table);
+                db.SaveChanges();
+            }
+            
+            AddAllergenViewModel newModel = new AddAllergenViewModel();
+            newModel.allergens = new SelectList(db.Allergens.ToList(), "id", "KnownAllergies");
+            return View(newModel);
         }
 
         public ActionResult FindRestaurant()
@@ -147,23 +154,27 @@ namespace AllergyFinder.Controllers
             return View(search);
         }
 
+        public Customer GetCustomer()
+        {
+            string userId = User.Identity.GetUserId();
+            Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
+            return customer;
+        }
+
         [HttpPost]
         public ActionResult FindRestaurant(FindRestaurantViewModel search)
         {
-            
-            string userId = User.Identity.GetUserId();
-            Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
-            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
+
+            var customer = GetCustomer();
+            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType); //fix the radius on this
             var searchRestaurantId = db.Restaurants.Where(r => r.Name == search.RestaurantName).Select(r => r.RestaurantId).FirstOrDefault();
             float[] temp = new float[(restaurants.Length) * 2];
-            string[] menuTemp = new string[restaurants.Length];
             string[] commentsTemp = new string[restaurants.Length];
             var comments = GetComments.Retrieve();
             for(int i = 0,j=0; i < restaurants.Length; i++,j+=2)
             {
                 temp[j] = float.Parse(restaurants[i].restaurant.location.latitude);
                 temp[j+1] = float.Parse(restaurants[i].restaurant.location.longitude);
-                menuTemp[i] = restaurants[i].restaurant.menu_url;
                 foreach(var comment in comments)
                 {
                     if(comment.Latitude == temp[j] && comment.Longitude == temp[j + 1])
@@ -178,7 +189,6 @@ namespace AllergyFinder.Controllers
             }
             search.AllRestaurants = temp;
             search.RestaurantId = searchRestaurantId;
-            search.MenuLink = menuTemp;
             search.Comments = commentsTemp;
             return View(search);
         }
@@ -196,9 +206,9 @@ namespace AllergyFinder.Controllers
         public ActionResult FindFoodItem()
         {
             FindFoodItemViewModel foodToFind = new FindFoodItemViewModel();
-            AddAllergenViewModel allAllergens = new AddAllergenViewModel();
-            foodToFind.Allergens = allAllergens;
-            foodToFind.Allergens.allergens = new SelectList(db.Allergens.ToList(),"id","KnownAllergies");
+            //AddAllergenViewModel allAllergens = new AddAllergenViewModel();
+            //foodToFind.Allergens = allAllergens;
+            //foodToFind.Allergens.allergens = new SelectList(db.Allergens.ToList(),"id","KnownAllergies");
             return View(foodToFind);
         }
 
@@ -210,7 +220,7 @@ namespace AllergyFinder.Controllers
             return View(menuItems);
         }
 
-        [HttpPost]
+        [HttpPost]//<---need to change this at some point
         public ActionResult FindFoodItem(FindFoodItemViewModel foodToFind)
         {
             var foodRetrieval = FoodRetrieval.Retrieve(foodToFind.BrandName,foodToFind.FoodName);
@@ -227,10 +237,12 @@ namespace AllergyFinder.Controllers
             List<string> allergensFound = new List<string>();
             if (route == 1)
             {
+                //comes here if you click "Log this food" from the index page
                 allergensFound = FindAllergens(ingredients, true);
                 TempData["foundAllergies"] = allergensFound;
                 return RedirectToAction("LogFood","Customers");
             }
+            //comes here if you click "Find Allergens" from the index page
             allergensFound = FindAllergens(ingredients, false);
             FindFoodInfoViewModel model = new FindFoodInfoViewModel();
             string userId = User.Identity.GetUserId();
@@ -252,7 +264,7 @@ namespace AllergyFinder.Controllers
         {
             var knownAllergens = db.Allergens.ToList();
             List<string> allergensFound = new List<string>();
-            foreach(var allergen in knownAllergens) //fix this to not go through whole list?
+            foreach(var allergen in knownAllergens) 
             {
                 if (ingredients.Contains(allergen.KnownAllergies.ToLower()))
                 {
@@ -277,9 +289,10 @@ namespace AllergyFinder.Controllers
             return RedirectToAction("LogFood", new { routeId = -1});
         }
 
-        public ActionResult LogFood(int? routeId) //should I keep a db of all past meals? Also, give the option of viewing ingredients and THEN logging the food
+        public ActionResult LogFood(int? routeId) //find a way to break this up
         {
             List<string> editedAllergens = new List<string>();
+            //goes this route if logging a beer
             if (routeId > 0)
             {
                 BeerClass1[] beers = TempData["BeerIngredients"] as BeerClass1[];
@@ -299,18 +312,19 @@ namespace AllergyFinder.Controllers
                 }
                 editedAllergens = FindAllergens(ingredients, true);
             }
+            //goes this route if logging a non-restaurant item
             else if(routeId == 0 || routeId == null)
             {
                 List<string> allergensToLog = TempData["foundAllergies"] as List<string>;
                 editedAllergens = allergensToLog.Distinct().ToList();
             }
+            //goes this way if logging a restaurant meal
             else
             {
                 editedAllergens = TempData["foundAllergens"] as List<string>;
             }
-                                  
-            string userId = User.Identity.GetUserId();
-            Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
+        
+            var customer = GetCustomer();
             FoodLog logger = new FoodLog();
             AllergenTotal logAllergen = new AllergenTotal();
             
@@ -363,9 +377,8 @@ namespace AllergyFinder.Controllers
 
         [HttpPost]
         public ActionResult LogReaction(LogReactionViewModel model)
-        {            
-            string userId = User.Identity.GetUserId();
-            Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
+        {
+            var customer = GetCustomer();
             var loggedMeal = db.FoodLogs.Where(l => l.id == model.id).FirstOrDefault();
             List<string> loggedAllergens = loggedMeal.Allergens.Split(',').ToList();
             loggedAllergens.RemoveAt(loggedAllergens.Count - 1);
@@ -442,22 +455,6 @@ namespace AllergyFinder.Controllers
                 test = item.Allergen.KnownAllergies + " has a " + item.Percentage + "% chance of causing " + reaction;
                 model.results.Add(test);
             }
-
-            //List<AllergenReactionJunction> topResults = new List<AllergenReactionJunction>();
-            //int numReactions = db.ReactionTotals.Count();
-            //var reactionIds = db.ReactionTotals.Select(r => r.ReactionId).Distinct().ToList();
-
-            //foreach(var reaction in reactionIds)
-            //{
-            //    var maxValue = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction).Max(a => a.Percentage);
-            //    topResults = db.AllergensReactionsJunction.Where(a => a.ReactionId == reaction && a.Percentage == maxValue).ToList();
-            //}
-            
-            //model.allResults = tempAllResults;
-            ////model.topResults = topResults;
-            //model.allResultsCount = tempAllResults.Count;
-            //model.results = re;
-            //model.topResultsCount = topResults.Count;
             return View(model);
         }
 
