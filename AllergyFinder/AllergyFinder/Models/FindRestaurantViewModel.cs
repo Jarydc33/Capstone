@@ -15,5 +15,7 @@ namespace AllergyFinder.Models
         public string[] MenuLink { get; set; }
         public string[] Comments { get; set; }
         public int? RestaurantId { get; set; }
+        public float? Latitude { get; set; }
+        public float? Longitude { get; set; }
     }
 }

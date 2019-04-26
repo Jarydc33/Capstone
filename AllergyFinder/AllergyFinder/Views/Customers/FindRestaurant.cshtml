@@ -1,6 +1,7 @@
 ﻿@model AllergyFinder.Models.FindRestaurantViewModel
 @{
     ViewBag.Title = "FindRestaurant";
+    
 }
 
 <h2>Find Restaurant</h2>
@@ -111,6 +112,17 @@
 <br />
 <div class="row">
     <div id="map"></div>
+    @using (Html.BeginForm("RouteGuidance", "Customers"))
+    {
+        @Html.HiddenFor(m => m.Latitude);
+        @Html.HiddenFor(m => m.Longitude);
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Get Directions Here" class="btn btn-default" />
+            </div>
+        </div>
+    }
     <script>
 
         function initMap() {
@@ -121,7 +133,6 @@
                 mapTypeId: google.maps.MapTypeId.ROADMAP,
             })
 
-            var contentString = "Test"
 
             var infowindow = new google.maps.InfoWindow();
 
@@ -137,6 +148,7 @@
                     position: new google.maps.LatLng(allLatLongs[i], allLatLongs[i+1]),
                     map: map,
                 })
+
                 google.maps.event.addListener(
                     marker,
                     'click',
@@ -147,11 +159,14 @@
                                 + 'Menu Link: ' + '<a href="@Url.Action("MenuSearch", "Customers")?id=' + restaurantId + '">Menu</a>'
                                 + 'Most Recent Comment About This Location: ' + allComments[j]);
                             infowindow.open(map, marker);
+                            $('#Latitude').val(allLatLongs[i]);
+                            $('#Longitude').val(allLatLongs[i + 1]);
                         }
             })(marker, i,j)
                 )
             }
         }
+
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=@Keys.GoogleKey&callback=initMap"

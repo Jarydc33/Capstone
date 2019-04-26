@@ -183,6 +183,16 @@ namespace AllergyFinder.Controllers
             return View(search);
         }
 
+        public ActionResult RouteGuidance(FindRestaurantViewModel location)
+        {
+            float?[] temp = new float?[2];
+            temp[0] = location.Latitude;
+            temp[1] = location.Longitude;
+            RouteGuidanceViewModel directions = new RouteGuidanceViewModel();
+            directions.coordinates = temp;
+            return View(directions);
+        }
+
         public ActionResult FindFoodItem()
         {
             FindFoodItemViewModel foodToFind = new FindFoodItemViewModel();

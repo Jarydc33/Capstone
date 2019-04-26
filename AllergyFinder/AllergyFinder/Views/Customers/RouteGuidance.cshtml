@@ -1,0 +1,71 @@
+﻿@model AllergyFinder.Models.RouteGuidanceViewModel
+@{
+    ViewBag.Title = "RouteGuidance";
+}
+
+<h2>Route Guidance</h2>
+
+<style>
+    #map {
+        width: 700px;
+        height: 400px;
+    }
+</style>
+<div id="map"></div>
+<script>
+
+    var latitude = @Html.Raw(Json.Encode(Model.coordinates[0]));
+    var longitude = @Html.Raw(Json.Encode(Model.coordinates[1]));
+    var pos;
+
+    function initMap() {
+        var pointA = new google.maps.LatLng(43.0389, -87.9065),
+            pointB = new google.maps.LatLng(latitude, longitude),
+            myOptions = {
+                zoom: 7,
+                center: pointA
+            },
+            map = new google.maps.Map(document.getElementById('map'), myOptions),
+            // Instantiate a directions service.
+            directionsService = new google.maps.DirectionsService,
+            directionsDisplay = new google.maps.DirectionsRenderer({
+                map: map
+            }),
+            markerA = new google.maps.Marker({
+                position: pointA,
+                title: "point A",
+                label: "A",
+                map: map
+            }),
+            markerB = new google.maps.Marker({
+                position: pointB,
+                title: "point B",
+                label: "B",
+                map: map
+            });
+
+        // get route from A to B
+        calculateAndDisplayRoute(directionsService, directionsDisplay, pointA, pointB);
+
+    }
+
+
+
+    function calculateAndDisplayRoute(directionsService, directionsDisplay, pointA, pointB) {
+        directionsService.route({
+            origin: pointA,
+            destination: pointB,
+            travelMode: google.maps.TravelMode.DRIVING
+        }, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            } else {
+                window.alert('Directions request failed due to ' + status);
+            }
+        });
+    }
+
+    initMap();
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=@Keys.GoogleKey&callback=initMap"
+        async defer></script>
