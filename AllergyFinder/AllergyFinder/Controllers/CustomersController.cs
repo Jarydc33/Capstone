@@ -189,6 +189,18 @@ namespace AllergyFinder.Controllers
             foodToFind.Allergens.allergens = new SelectList(db.Allergens.ToList(),"id","KnownAllergies");
             return View(foodToFind);
         }
+
+        public ActionResult MenuSearch(FindFoodItemViewModel restaurantModel)
+        {
+            var searchRestaurantId = db.Restaurants.Where(r => r.Name == restaurantModel.BrandName).Select(r => r.RestaurantId).FirstOrDefault();
+            if(searchRestaurantId == null)
+            {
+                return RedirectToAction("FindFoodItem");
+            }
+            restaurantModel.foundItems = MenuRetriever.Retrieve(searchRestaurantId);
+            return View(restaurantModel);
+        }
+
         [HttpPost]
         public ActionResult FindFoodItem(FindFoodItemViewModel foodToFind)
         {

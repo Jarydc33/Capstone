@@ -10,5 +10,6 @@ namespace AllergyFinder.Models
         public string BrandName { get; set; }
         public string FoodName { get; set; }
         public AddAllergenViewModel Allergens { get; set; }
+        public MenuItem[] foundItems { get; set; }
     }
 }

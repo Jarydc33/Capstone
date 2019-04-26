@@ -29,6 +29,8 @@ namespace AllergyFinder.Models
         public DbSet<AllergenTotal> AllergenTotals { get; set; }
         public DbSet<ReactionTotal> ReactionTotals { get; set; }
         public DbSet<FoodLog>FoodLogs { get; set; }
+        public DbSet<Restaurant> Restaurants { get; set; }
+        public DbSet<MenuItem> MenuItems { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

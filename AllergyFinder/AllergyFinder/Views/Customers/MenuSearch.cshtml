@@ -1,0 +1,41 @@
+﻿@model AllergyFinder.Models.FindFoodItemViewModel
+@{
+    ViewBag.Title = "MenuSearch";
+}
+
+<h2>MenuSearch</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Menu Item")
+        </th>
+        <th>
+            @Html.DisplayName("Allergens")
+        </th>
+        <th></th>
+
+    </tr>
+    @{
+        if (Model != null && Model.foundItems != null)
+        {
+            foreach (var item in Model.foundItems)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FoodItem)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Allergens)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Log This Food", "FindFoodInfo" @*new { NDBNo = item.ndbno, route = 1 }*@)
+                    </td>
+
+                </tr>
+            }
+        }
+    }
+
+
+</table>

@@ -78,6 +78,21 @@ namespace AllergyFinder.Migrations
             //    new Reaction() { id = 1, CommonReactions = "Chest Pain" },
             //    new Reaction() { id = 1, CommonReactions = "Weak Pulse" }
             //);
+
+            //context.Restaurants.AddOrUpdate(x => x.id,
+            //     new Restaurant() { Name = "Burger King", RestaurantId = 1 },
+            //     new Restaurant() { Name = "McDonalds", RestaurantId = 2 }
+
+            //    );
+
+            //context.MenuItems.AddOrUpdate(x => x.id,
+            //    new MenuItem() { RestaurantId = 1, FoodItem = "Double Stacker KING", Allergens = "egg, milk, soy, wheat" },
+            //    new MenuItem() { RestaurantId = 1, FoodItem = "Angry WHOPPER", Allergens = "egg, milk, soy, wheat" },
+            //    new MenuItem() { RestaurantId = 1, FoodItem = "Chicken Garden Salad", Allergens = "egg, milk, wheat" },
+            //    new MenuItem() { RestaurantId = 2, FoodItem = "Big Mac", Allergens = "egg, milk, soy, wheat" },
+            //    new MenuItem() { RestaurantId = 2, FoodItem = "Caramel Frappe", Allergens = "milk" },
+            //    new MenuItem() { RestaurantId = 2, FoodItem = "Chicken McNuggets", Allergens = "wheat, sulphite" }
+            //    );
         }
     }
 }
