@@ -29,7 +29,7 @@
                         @Html.DisplayFor(modelItem => item.Allergens)
                     </td>
                     <td>
-                        @Html.ActionLink("Log This Food", "FindFoodInfo" @*new { NDBNo = item.ndbno, route = 1 }*@)
+                        @Html.ActionLink("Log This Food", "LogRestaurantFood", new { id = item.id })
                     </td>
 
                 </tr>

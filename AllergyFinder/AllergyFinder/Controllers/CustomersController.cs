@@ -259,13 +259,22 @@ namespace AllergyFinder.Controllers
             return allergensFound;
         }
 
-        public ActionResult LogFood(int? beerId) //should I keep a db of all past meals? Also, give the option of viewing ingredients and THEN logging the food
+        public ActionResult LogRestaurantFood(int id)
+        {
+            var menuItem = db.MenuItems.Find(id);
+            var menuAllergens = menuItem.Allergens;
+            var editedAllergens = FindAllergens(menuAllergens, true);
+            TempData["foundAllergens"] = editedAllergens;
+            return RedirectToAction("LogFood", new { routeId = -1});
+        }
+
+        public ActionResult LogFood(int? routeId) //should I keep a db of all past meals? Also, give the option of viewing ingredients and THEN logging the food
         {
             List<string> editedAllergens = new List<string>();
-            if (beerId != 0)
+            if (routeId > 0)
             {
                 BeerClass1[] beers = TempData["BeerIngredients"] as BeerClass1[];
-                BeerClass1 selectedBeer = beers.Where(a => a.id == beerId).FirstOrDefault();
+                BeerClass1 selectedBeer = beers.Where(a => a.id == routeId).FirstOrDefault();
                 string ingredients = "";
                 if (selectedBeer.ingredients.hops != null)
                 {
@@ -281,11 +290,15 @@ namespace AllergyFinder.Controllers
                 }
                 editedAllergens = FindAllergens(ingredients, true);
             }
-            else
+            else if(routeId == 0 || routeId == null)
             {
                 List<string> allergensToLog = TempData["foundAllergies"] as List<string>;
                 editedAllergens = allergensToLog.Distinct().ToList();
-            }            
+            }
+            else
+            {
+                editedAllergens = TempData["foundAllergens"] as List<string>;
+            }
                                   
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
