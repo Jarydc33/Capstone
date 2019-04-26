@@ -128,6 +128,7 @@
             var allLatLongs = @Html.Raw(Json.Encode(Model.AllRestaurants));
             var allMenuLinks = @Html.Raw(Json.Encode(Model.MenuLink));
             var allComments = @Html.Raw(Json.Encode(Model.Comments));
+            var restaurantId = @Html.Raw(Json.Encode(Model.RestaurantId));
             var marker, i, j
 
             for (i = 0,j = 0; i < allLatLongs.length; i += 2, j+=1) {
@@ -142,7 +143,8 @@
                     (function (marker,i,j) {
                         return function () {
                             infowindow.setContent('Latitude: ' + allLatLongs[i].toString() + ', Longitude: ' + allLatLongs[i + 1].toString() + '\n'
-                                + 'Menu Link: ' + '<a href="' + allMenuLinks[j] + '">' + 'Menu Link' + '</a>' + '\n'
+                                //+ 'Menu Link: ' + '<a href="' + allMenuLinks[j] + '">' + 'Menu Link' + '</a>' + '\n'
+                                + 'Menu Link: ' + '<a href="@Url.Action("MenuSearch", "Customers")?id=' + restaurantId + '">Menu</a>'
                                 + 'Most Recent Comment About This Location: ' + allComments[j]);
                             infowindow.open(map, marker);
                         }

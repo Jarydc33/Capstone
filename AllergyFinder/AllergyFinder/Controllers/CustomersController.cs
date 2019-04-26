@@ -154,6 +154,7 @@ namespace AllergyFinder.Controllers
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
             var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
+            var searchRestaurantId = db.Restaurants.Where(r => r.Name == search.RestaurantName).Select(r => r.RestaurantId).FirstOrDefault();
             float[] temp = new float[(restaurants.Length) * 2];
             string[] menuTemp = new string[restaurants.Length];
             string[] commentsTemp = new string[restaurants.Length];
@@ -176,6 +177,7 @@ namespace AllergyFinder.Controllers
                 }
             }
             search.AllRestaurants = temp;
+            search.RestaurantId = searchRestaurantId;
             search.MenuLink = menuTemp;
             search.Comments = commentsTemp;
             return View(search);
@@ -190,15 +192,12 @@ namespace AllergyFinder.Controllers
             return View(foodToFind);
         }
 
-        public ActionResult MenuSearch(FindFoodItemViewModel restaurantModel)
+        public ActionResult MenuSearch(int? id)
         {
-            var searchRestaurantId = db.Restaurants.Where(r => r.Name == restaurantModel.BrandName).Select(r => r.RestaurantId).FirstOrDefault();
-            if(searchRestaurantId == null)
-            {
-                return RedirectToAction("FindFoodItem");
-            }
-            restaurantModel.foundItems = MenuRetriever.Retrieve(searchRestaurantId);
-            return View(restaurantModel);
+            var menu = MenuRetriever.Retrieve(id);
+            FindFoodItemViewModel menuItems = new FindFoodItemViewModel();
+            menuItems.foundItems = menu;
+            return View(menuItems);
         }
 
         [HttpPost]

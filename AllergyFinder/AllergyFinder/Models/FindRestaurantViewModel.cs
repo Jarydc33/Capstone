@@ -14,5 +14,6 @@ namespace AllergyFinder.Models
         public string CuisineType { get; set; }
         public string[] MenuLink { get; set; }
         public string[] Comments { get; set; }
+        public int? RestaurantId { get; set; }
     }
 }
