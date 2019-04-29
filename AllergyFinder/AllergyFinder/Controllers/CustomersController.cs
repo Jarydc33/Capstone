@@ -241,11 +241,13 @@ namespace AllergyFinder.Controllers
                 //comes here if you click "Log this food" from the index page
                 allergensFound = FindAllergens(ingredients, true);
                 TempData["foundAllergies"] = allergensFound;
-                TempData["mealName"] = mealName;
+                TempData["MealName"] = mealName;
                 return RedirectToAction("LogFood","Customers");
             }
             //comes here if you click "Find Allergens" from the index page
             allergensFound = FindAllergens(ingredients, false);
+            TempData["MealName"] = mealName;
+            var foodLogAllergens = FindAllergens(ingredients, true);
             FindFoodInfoViewModel model = new FindFoodInfoViewModel();
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
@@ -259,6 +261,7 @@ namespace AllergyFinder.Controllers
 
             }
             model.allergens = allergensFound.Distinct().ToList();
+            model.toLogAllergens = foodLogAllergens;
             return View(model);
         }
 
@@ -320,9 +323,9 @@ namespace AllergyFinder.Controllers
             {
                 List<string> allergensToLog = TempData["foundAllergies"] as List<string>;
                 editedAllergens = allergensToLog.Distinct().ToList();
-                mealName = TempData["mealName"] as string;
+                mealName = TempData["MealName"] as string;
             }
-            //goes this way if logging a restaurant meal
+            //goes this way if logging a restaurant meal or LogByAllergen
             else
             {
                 editedAllergens = TempData["foundAllergens"] as List<string>;

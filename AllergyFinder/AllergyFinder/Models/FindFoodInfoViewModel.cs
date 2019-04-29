@@ -7,7 +7,8 @@ namespace AllergyFinder.Models
 {
     public class FindFoodInfoViewModel
     {
-        public List<string> allergens = new List<string>();
-        public List<Allergen> userAllergies = new List<Allergen>();
+        public List<string> allergens { get; set; }
+        public List<string> toLogAllergens { get; set; }
+        public List<Allergen> userAllergies { get; set; }
     }
 }
