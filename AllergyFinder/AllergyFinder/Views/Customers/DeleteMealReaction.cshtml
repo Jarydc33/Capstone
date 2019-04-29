@@ -1,0 +1,40 @@
+﻿@model IEnumerable<AllergyFinder.Models.FoodLog>
+
+<div class="HomeHeader">
+    <h3>All Logged Meals and Reactions</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        @Html.Partial("_SideBarPartial")
+    </div>
+    <div class="col-md-6 SideBar">
+        <table class="table">
+            <tr>
+                <th>
+                    <h3>Meal Name</h3>
+                </th>
+                <th>
+                    <h3>Allergens</h3>
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>
+                        <p>@Html.DisplayFor(model => item.MealName)</p>
+                    </td>
+                    <td>
+                        <p>@Html.DisplayFor(model => item.Allergens)</p>
+                    </td>
+                    <td>
+                        <p>@Html.ActionLink("Delete", "DeleteFoodLog", new { id = item.MealId })</p>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>

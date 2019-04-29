@@ -525,5 +525,62 @@ namespace AllergyFinder.Controllers
             TempData["foods"] = null;
             return RedirectToAction("Index");
         }
+
+        public ActionResult DeleteMealReaction()
+        {
+            List<FoodLog> loggedMeals = new List<FoodLog>(); //make sure this affects the reactions table
+            loggedMeals = db.FoodLogs.Where(r => r.Reactions != "Logged").ToList();
+            return View(loggedMeals);
+        }
+
+        
+        public ActionResult DeleteFoodLog(int? id)
+        {
+            var toDelete = db.FoodLogs.Where(r => r.MealId == id).FirstOrDefault();
+            db.FoodLogs.Remove(toDelete);
+            db.SaveChanges();
+            TempData["foods"] = null;
+            return RedirectToAction("Index");
+        }
+
+        //public ActionResult EditFoodLog(int? id)
+        //{
+        //    EditFoodLogViewModel model = new EditFoodLogViewModel();
+        //    model.LogToChange = db.FoodLogs.Where(f => f.MealId == id).FirstOrDefault();
+        //    model.Reaction = new SelectList(db.Reactions.ToList(), "id", "CommonReactions");
+        //    model.FoodLogId = id;
+        //    return View(model);
+        //}
+
+        //[HttpPost]
+        //public ActionResult EditFoodLog(EditFoodLogViewModel model)
+        //{
+
+        //    FoodLog toChange = db.FoodLogs.Where(f => f.MealId == model.FoodLogId).FirstOrDefault();
+        //    if(model.LogToChange.MealName == null)
+        //    {
+        //        toChange.MealName = "User Changed";
+        //    }
+        //    else
+        //    {
+        //        toChange.MealName = model.LogToChange.MealName;
+        //    }
+            
+        //    if(toChange.Reactions == "Logged")
+        //    {
+        //        EditJunctionTable(model.ReactionId);
+        //    }
+        //    else
+        //    {
+
+        //    }
+        //    TempData["foods"] = null;
+        //    return RedirectToAction("Index");
+        //}
+
+        public void EditJunctionTable(int? reactionId)
+        {
+            AllergenReactionJunction toChange = new AllergenReactionJunction();
+        }
     }
 }
