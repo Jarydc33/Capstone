@@ -325,6 +325,11 @@ namespace AllergyFinder.Controllers
             else
             {
                 editedAllergens = TempData["foundAllergens"] as List<string>;
+                //goes this way if coming from LogByAllergen
+                if(routeId == -2)
+                {
+                    mealName = TempData["MealName"] as string;
+                }
                 
             }
         
@@ -378,6 +383,28 @@ namespace AllergyFinder.Controllers
             model.LoggedMeals = new SelectList(db.FoodLogs.Where(f => f.Reactions == null && f.CustomerId == customer.id).ToList(), "id", "MealName");
             model.Reaction = new SelectList(db.Reactions.ToList(),"id", "CommonReactions");
             return View(model);
+        }
+
+        public ActionResult LogByAllergen()
+        {
+            LogByAllergenViewModel model = new LogByAllergenViewModel();
+            model.Allergens = new MultiSelectList(db.Allergens.ToList(),"id","KnownAllergies");
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult LogByAllergen(LogByAllergenViewModel model)
+        {
+            List<string> temp = new List<string>();
+            foreach(var item in model.ChosenAllergens)
+            {
+                int parsed = int.Parse(item);
+                temp.Add(db.Allergens.Where(a => a.id == parsed).Select(a => a.KnownAllergies).FirstOrDefault());
+                temp.Add(item);
+            }
+            TempData["foundAllergens"] = temp;
+            TempData["MealName"] = model.UserMealName;
+            return RedirectToAction("LogFood", new { routeId = -2});
         }
 
         [HttpPost]
