@@ -31,7 +31,7 @@
 
             <div class="form-group">
                 <p>@Html.Label("Select a reaction", htmlAttributes: new { @class = "control-label col-md-2" })</p>
-                @Html.DropDownListFor(model => model.reactionId, (SelectList)Model.Reaction, new { htmlAttributes = "control-label col-md-2" })
+                @Html.DropDownListFor(model => model.allReactionIds, (MultiSelectList)Model.Reaction, new { htmlAttributes = "control-label col-md-2", multiple = "multiple" })
                 @Html.ValidationMessageFor(model => model.Reaction, "", new { @class = "text-danger" })
             </div>
 

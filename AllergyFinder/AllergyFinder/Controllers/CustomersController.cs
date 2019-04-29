@@ -341,6 +341,11 @@ namespace AllergyFinder.Controllers
             FoodLog logger = new FoodLog();
             AllergenTotal logAllergen = new AllergenTotal();
             
+            if(editedAllergens == null)
+            {
+                TempData["foods"] = null;
+                return RedirectToAction("Index");
+            }
 
             for(int i = 0, j = 1; i < editedAllergens.Count; i += 2, j+=2)
             {
@@ -385,7 +390,7 @@ namespace AllergyFinder.Controllers
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
             LogReactionViewModel model = new LogReactionViewModel();
             model.LoggedMeals = new SelectList(db.FoodLogs.Where(f => f.Reactions == null && f.CustomerId == customer.id).ToList(), "id", "MealName");
-            model.Reaction = new SelectList(db.Reactions.ToList(),"id", "CommonReactions");
+            model.Reaction = new MultiSelectList(db.Reactions.ToList(),"id", "CommonReactions");
             return View(model);
         }
 
@@ -422,43 +427,48 @@ namespace AllergyFinder.Controllers
             List<int> allergenId = new List<int>();
             AllergenReactionJunction toLog = new AllergenReactionJunction();
 
-            ReactionTotal reactionTotal = db.ReactionTotals.Where(r => r.ReactionId == model.reactionId).FirstOrDefault();
-            if (reactionTotal == null)
+            for(int i = 0; i< model.allReactionIds.Length; i++)
             {
-                ReactionTotal newReaction = new ReactionTotal();
-                newReaction.CustomerId = customer.id;
-                newReaction.ReactionId = model.reactionId;
-                newReaction.Total = 1;
-                db.ReactionTotals.Add(newReaction);
-                db.SaveChanges();
-            }
-            else
-            {
-                reactionTotal.Total += 1;
-                db.SaveChanges();
-            }
-
-            foreach (var allergen in loggedAllergens)
-            {
-                int tempId = db.Allergens.Where(a => a.KnownAllergies == allergen).Select(a => a.id).FirstOrDefault();
-                toLog = db.AllergensReactionsJunction.Where(a => a.CustomerId == customer.id && a.ReactionId == model.reactionId && a.AllergenId == tempId).FirstOrDefault();
-                if(toLog == null)
+                int placeHolder = model.allReactionIds[i];
+                ReactionTotal reactionTotal = db.ReactionTotals.Where(r => r.ReactionId == placeHolder).FirstOrDefault();
+                if (reactionTotal == null)
                 {
-                    AllergenReactionJunction newEntry = new AllergenReactionJunction();
-                    newEntry.CustomerId = customer.id;
-                    newEntry.ReactionId = model.reactionId;
-                    newEntry.AllergenId = tempId;
-                    newEntry.Total = 1;
-                    db.AllergensReactionsJunction.Add(newEntry);
-                    db.SaveChanges(); //change to async
+                    ReactionTotal newReaction = new ReactionTotal();
+                    newReaction.CustomerId = customer.id;
+                    newReaction.ReactionId = placeHolder;
+                    newReaction.Total = 1;
+                    db.ReactionTotals.Add(newReaction);
+                    db.SaveChanges();
                 }
                 else
                 {
-                    toLog.Total += 1;
+                    reactionTotal.Total += 1;
                     db.SaveChanges();
                 }
+
+                foreach (var allergen in loggedAllergens)
+                {
+                    int tempId = db.Allergens.Where(a => a.KnownAllergies == allergen).Select(a => a.id).FirstOrDefault();
+                    toLog = db.AllergensReactionsJunction.Where(a => a.CustomerId == customer.id && a.ReactionId == placeHolder && a.AllergenId == tempId).FirstOrDefault();
+                    if (toLog == null)
+                    {
+                        AllergenReactionJunction newEntry = new AllergenReactionJunction();
+                        newEntry.CustomerId = customer.id;
+                        newEntry.ReactionId = placeHolder;
+                        newEntry.AllergenId = tempId;
+                        newEntry.Total = 1;
+                        db.AllergensReactionsJunction.Add(newEntry);
+                        db.SaveChanges(); //change to async
+                    }
+                    else
+                    {
+                        toLog.Total += 1;
+                        db.SaveChanges();
+                    }
+                }
+                DetermineAllergy(model.allReactionIds[i]);
             }
-            DetermineAllergy(model.reactionId);
+
             TempData["foods"] = null;
             return RedirectToAction("Index");
         }

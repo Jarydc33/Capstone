@@ -15,5 +15,6 @@ namespace AllergyFinder.Models
         public IEnumerable<SelectListItem> Reaction { get; set; }
         public int id { get; set; }
         public int reactionId { get; set; }
+        public int[] allReactionIds { get; set; }
     }
 }
