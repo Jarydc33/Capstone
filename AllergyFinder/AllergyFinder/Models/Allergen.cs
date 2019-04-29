@@ -11,5 +11,6 @@ namespace AllergyFinder.Models
         [Key]
         public int id { get; set; }
         public string KnownAllergies { get; set; }
+        public bool UserMade { get; set; }
     }
 }

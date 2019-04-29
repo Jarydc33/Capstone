@@ -231,9 +231,14 @@
     <Compile Include="Migrations\201904291214368_AddedMealName.Designer.cs">
       <DependentUpon>201904291214368_AddedMealName.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904291438579_AddedUserMade.cs" />
+    <Compile Include="Migrations\201904291438579_AddedUserMade.Designer.cs">
+      <DependentUpon>201904291438579_AddedUserMade.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddAllergenViewModel.cs" />
+    <Compile Include="Models\AddCustomAllergenViewModel.cs" />
     <Compile Include="Models\Allergen.cs" />
     <Compile Include="Models\AllergenJunction.cs" />
     <Compile Include="Models\AllergenStatsViewModel.cs" />
@@ -334,6 +339,7 @@
     <Content Include="Views\Customers\RouteGuidance.cshtml" />
     <Content Include="Views\Shared\_SideBarPartial.cshtml" />
     <Content Include="Views\Customers\LogByAllergen.cshtml" />
+    <Content Include="Views\Customers\AddCustomAllergen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -372,6 +378,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904291214368_AddedMealName.resx">
       <DependentUpon>201904291214368_AddedMealName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904291438579_AddedUserMade.resx">
+      <DependentUpon>201904291438579_AddedUserMade.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

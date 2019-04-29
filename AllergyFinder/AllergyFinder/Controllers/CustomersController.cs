@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using AllergyFinder.Models;
@@ -503,6 +504,23 @@ namespace AllergyFinder.Controllers
             model.Beers = BeerRetriever.Retrieve(model.BeerName);
             return View(model);
         }
-       
+
+        public ActionResult AddCustomAllergen()
+        {
+            AddCustomAllergenViewModel model = new AddCustomAllergenViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult AddCustomAllergen(AddCustomAllergenViewModel model)
+        {
+            Allergen toAdd = new Allergen();
+            toAdd.KnownAllergies = model.AllergenName;
+            toAdd.UserMade = true;
+            db.Allergens.Add(toAdd);
+            db.SaveChanges();
+            TempData["foods"] = null;
+            return RedirectToAction("Index");
+        }
     }
 }
