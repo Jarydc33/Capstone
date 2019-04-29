@@ -22,5 +22,7 @@ namespace AllergyFinder.Models
         public Customer Customer { get; set; }
 
         public int? MealId { get; set; }
+
+        public string MealName { get; set; }
     }
 }

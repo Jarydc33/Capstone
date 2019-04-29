@@ -227,6 +227,10 @@
     <Compile Include="Migrations\201904252008139_AddingMenuItems.Designer.cs">
       <DependentUpon>201904252008139_AddingMenuItems.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201904291214368_AddedMealName.cs" />
+    <Compile Include="Migrations\201904291214368_AddedMealName.Designer.cs">
+      <DependentUpon>201904291214368_AddedMealName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddAllergenViewModel.cs" />
@@ -363,6 +367,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201904252008139_AddingMenuItems.resx">
       <DependentUpon>201904252008139_AddingMenuItems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201904291214368_AddedMealName.resx">
+      <DependentUpon>201904291214368_AddedMealName.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

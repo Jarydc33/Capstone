@@ -230,7 +230,7 @@ namespace AllergyFinder.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult FindFoodInfo(string NDBNo, int route)
+        public ActionResult FindFoodInfo(string NDBNo, int route, string mealName)
         {
             var ingredients = FoodInfoRetrieval.Retrieve(NDBNo);
             ingredients = ingredients.ToLower();
@@ -240,6 +240,7 @@ namespace AllergyFinder.Controllers
                 //comes here if you click "Log this food" from the index page
                 allergensFound = FindAllergens(ingredients, true);
                 TempData["foundAllergies"] = allergensFound;
+                TempData["mealName"] = mealName;
                 return RedirectToAction("LogFood","Customers");
             }
             //comes here if you click "Find Allergens" from the index page
@@ -292,6 +293,7 @@ namespace AllergyFinder.Controllers
         public ActionResult LogFood(int? routeId) //find a way to break this up
         {
             List<string> editedAllergens = new List<string>();
+            string mealName = "";
             //goes this route if logging a beer
             if (routeId > 0)
             {
@@ -317,11 +319,13 @@ namespace AllergyFinder.Controllers
             {
                 List<string> allergensToLog = TempData["foundAllergies"] as List<string>;
                 editedAllergens = allergensToLog.Distinct().ToList();
+                mealName = TempData["mealName"] as string;
             }
             //goes this way if logging a restaurant meal
             else
             {
                 editedAllergens = TempData["foundAllergens"] as List<string>;
+                
             }
         
             var customer = GetCustomer();
@@ -349,6 +353,7 @@ namespace AllergyFinder.Controllers
             }
             logger.Reactions = null;
             logger.CustomerId = customer.id;
+            logger.MealName = mealName;
             logger.MealId = db.FoodLogs.Where(f => f.CustomerId == customer.id).Max(m => m.MealId);
             if(logger.MealId == null)
             {
@@ -370,7 +375,7 @@ namespace AllergyFinder.Controllers
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
             LogReactionViewModel model = new LogReactionViewModel();
-            model.LoggedMeals = new SelectList(db.FoodLogs.Where(f => f.Reactions == null && f.CustomerId == customer.id).ToList(), "id", "MealId");
+            model.LoggedMeals = new SelectList(db.FoodLogs.Where(f => f.Reactions == null && f.CustomerId == customer.id).ToList(), "id", "MealName");
             model.Reaction = new SelectList(db.Reactions.ToList(),"id", "CommonReactions");
             return View(model);
         }

@@ -33,10 +33,10 @@
                                     <p>@Html.DisplayFor(modelItem => item.name)</p>
                                 </td>
                                 <td>
-                                    <p>@Html.ActionLink("Find Allergens", "FindFoodInfo", new { NDBNo = item.ndbno, route = 0 })</p>
+                                    <p>@Html.ActionLink("Find Allergens", "FindFoodInfo", new { NDBNo = item.ndbno, route = 0, mealName = item.name })</p>
                                 </td>
                                 <td>
-                                    <p>@Html.ActionLink("Log This Food", "FindFoodInfo", new { NDBNo = item.ndbno, route = 1 })</p>
+                                    <p>@Html.ActionLink("Log This Food", "FindFoodInfo", new { NDBNo = item.ndbno, route = 1, mealName = item.name })</p>
                                 </td>
 
                             </tr>
