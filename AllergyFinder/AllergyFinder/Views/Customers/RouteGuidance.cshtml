@@ -3,15 +3,19 @@
     ViewBag.Title = "RouteGuidance";
 }
 
-<h2>Route Guidance</h2>
+<div class="HomeHeader">
+    <h3>Route Guidance</h3>
+</div>
 
-<style>
-    #map {
-        width: 700px;
-        height: 400px;
-    }
-</style>
-<div id="map"></div>
+<div class="row">
+    <div class="col-md-2">
+        @Html.Partial("_SideBarPartial")
+    </div>
+    <div class="col-md-8">
+        <div id="map"></div>
+    </div>
+</div>
+
 <script>
 
     var latitude = @Html.Raw(Json.Encode(Model.coordinates[0]));

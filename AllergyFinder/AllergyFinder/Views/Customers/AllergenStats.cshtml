@@ -4,23 +4,27 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Allergan Stat Results</h2>
+<div class="HomeHeader">
+    <h3>Allergen Statistics</h3>
+</div>
 
-<div>
-    <h4>Allergens that have the top chance of causing an allergy</h4>
-    <hr />
-    <table>
-        @foreach (var line in Model.results)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => line);
-                </td>
-            </tr>
-        }
+<div class="row">
+    <div class="col-md-2">
+        @Html.Partial("_SideBarPartial")
+    </div>
+    <div class="col-md-6 SideBar">
+        <h4>Allergens that have the top chance of causing an allergy</h4>
+        <hr />
+        <table>
+            @foreach (var line in Model.results)
+            {
+                <tr>
+                    <td>
+                        <p>@Html.DisplayFor(modelItem => line)</p>
+                    </td>
+                </tr>
+            }
 
-
-
-
-    </table>
+        </table>
+    </div>    
 </div>

@@ -3,41 +3,43 @@
     ViewBag.Title = "FindFoodInfo";
 }
 
-<h2>FindFoodInfo</h2>
-<div>
-    <h4>Customer</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        
-        @{ 
-            List<string> allergenOfConcern = new List<string>();
-            foreach(var allergen in Model.userAllergies)
-            {
-                foreach(var foodAllergen in Model.allergens)
+<div class="HomeHeader">
+    <h3>Allergens Found in This Item</h3>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        @Html.Partial("_SideBarPartial")
+    </div>
+    <div class="col-md-6 SideBar">
+        <dl class="dl-horizontal">
+
+            @{
+                List<string> allergenOfConcern = new List<string>();
+                foreach (var allergen in Model.userAllergies)
                 {
-                    if(allergen.KnownAllergies == foodAllergen)
+                    foreach (var foodAllergen in Model.allergens)
                     {
-                        allergenOfConcern.Add(foodAllergen);
-                        <h4 style="color:red">WARNING: This food contains @foodAllergen which you have listed as a known allergy.</h4>
+                        if (allergen.KnownAllergies == foodAllergen)
+                        {
+                            allergenOfConcern.Add(foodAllergen);
+                            <h4 style="color:red">WARNING: This food contains @foodAllergen which you have listed as a known allergy.</h4>
+                        }
                     }
                 }
             }
-        }
 
-        <dt>
-            @Html.DisplayName("Allergens found in this item")
-        </dt>
-
-        @foreach (var allergen in Model.allergens)
-        {
-            <dt>
-                @Html.DisplayFor(model => allergen)
-            </dt>
-        }
-
-
-    </dl>
+            <div class="HomeHeader">
+                @foreach (var allergen in Model.allergens)
+                {
+                    <dt>
+                        <p>@Html.DisplayFor(model => allergen)</p>
+                    </dt>
+                }
+            </div>
+        </dl>
+    </div>
+    
 </div>
-<p>|
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+    

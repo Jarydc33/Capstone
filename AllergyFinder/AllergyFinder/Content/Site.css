@@ -1,6 +1,60 @@
-﻿body {
+﻿@import url(http://fonts.googleapis.com/css?family=Quicksand:400,600);
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background-color: #B3E0F2;
+    font: 16px "Quicksand";
+    text-shadow: 1px 1px black;
+}
+
+
+h3 {
+    color: #1DA1F2;
+}
+
+h4 {
+    color: #63CAF2;
+}
+
+p {
+    color: #F25E5E;
+}
+
+#map {
+    height: 400px;
+    width: 700px;
+}
+
+a.ActionClass {
+    color: #63CAF2;
+}
+
+.HomeHeader{
+    text-align:center;
+    margin-bottom:25px;
+}
+
+#HomeTopRow{
+    margin-bottom:50px;
+    
+}
+
+#HomeColumns {
+    background-color: slategrey;
+    text-align: center;
+    border-radius: 5px 5px;
+    box-shadow: 5px 5px #515552;
+}
+
+.SideBar {
+    background-color: #104290;
+    padding-left: 5px;
+    padding-top: 5px;
+    border-radius: 5px 5px;
+    box-shadow: 5px 5px black;
+    margin-bottom: 25px;
+    opacity: .75;
 }
 
 /* Set padding to keep content from hitting the edges */

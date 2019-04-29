@@ -4,44 +4,52 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-@Html.ActionLink("Log a Known Allergy", "LogAllergy") |
-@Html.ActionLink("Search for an Allergen in a Food", "FindFoodItem") |
-@Html.ActionLink("Search for a Restaurant", "FindRestaurant") |
-@Html.ActionLink("Leave a Comment About a Location", "LeaveComment") |
-@Html.ActionLink("Log a Meal", "LogMeal") |
-@Html.ActionLink("Log a Reaction", "LogReaction") |
-@Html.ActionLink("View Your Current Allergen Stats", "AllergenStats") |
-@Html.ActionLink("Log an alcoholic drink", "LogAlcohol") |
+<div class="HomeHeader">
+    <h3>Customer Home</h3>
+</div>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Food Name")
-        </th>
-        <th></th>
-
-    </tr>
-    @{
-        if (Model != null && Model.retrievedFoods !=null)
-        {
-            foreach (var item in Model.retrievedFoods)
-            {
+<div class="row">
+    <div class="col-md-2">        
+        @Html.Partial("_SideBarPartial")
+    </div>
+    <div class="col-md-4">
+        <div class="SideBar">
+            <table class="table">
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.name)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Find Allergens", "FindFoodInfo", new { NDBNo = item.ndbno, route = 0})
-                    </td>
-                    <td>
-                        @Html.ActionLink("Log This Food", "FindFoodInfo", new { NDBNo = item.ndbno, route = 1 })
-                    </td>
+                    <th>
+                        <h4>Food Name</h4>
+                    </th>
+                    <th></th>
+                    <th></th>
 
                 </tr>
-            }
-        }
-    }
+                @{
+                    if (Model != null && Model.retrievedFoods != null)
+                    {
+                        foreach (var item in Model.retrievedFoods)
+                        {
+                            <tr>
+                                <td>
+                                    <p>@Html.DisplayFor(modelItem => item.name)</p>
+                                </td>
+                                <td>
+                                    <p>@Html.ActionLink("Find Allergens", "FindFoodInfo", new { NDBNo = item.ndbno, route = 0 })</p>
+                                </td>
+                                <td>
+                                    <p>@Html.ActionLink("Log This Food", "FindFoodInfo", new { NDBNo = item.ndbno, route = 1 })</p>
+                                </td>
+
+                            </tr>
+                        }
+                    }
+                }
 
 
-</table>
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+

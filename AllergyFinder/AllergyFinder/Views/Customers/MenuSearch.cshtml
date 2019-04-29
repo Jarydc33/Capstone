@@ -3,39 +3,49 @@
     ViewBag.Title = "MenuSearch";
 }
 
-<h2>MenuSearch</h2>
+<div class="HomeHeader">
+    <h3>Menu Information</h3>
+</div>
 
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Menu Item")
-        </th>
-        <th>
-            @Html.DisplayName("Allergens")
-        </th>
-        <th></th>
+<div class="row">
+    <div class="col-md-2">
+        @Html.Partial("_SideBarPartial")
+    </div>
+    <div class="col-md-6 SideBar">
+        <table class="table">
+            <tr>
+                <th>
+                    <h4>@Html.DisplayName("Menu Item")</h4>
+                </th>
+                <th>
+                    <h4>@Html.DisplayName("Allergens")</h4>
+                </th>
+                <th></th>
 
-    </tr>
-    @{
-        if (Model != null && Model.foundItems != null)
-        {
-            foreach (var item in Model.foundItems)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FoodItem)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Allergens)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Log This Food", "LogRestaurantFood", new { id = item.id })
-                    </td>
+            </tr>
+            @{
+                if (Model != null && Model.foundItems != null)
+                {
+                    foreach (var item in Model.foundItems)
+                    {
+                        <tr>
+                            <td>
+                                <p>@Html.DisplayFor(modelItem => item.FoodItem)</p>
+                            </td>
+                            <td>
+                                <p>@Html.DisplayFor(modelItem => item.Allergens)</p>
+                            </td>
+                            <td>
+                                <p>@Html.ActionLink("Log This Food", "LogRestaurantFood", new { id = item.id })</p>
+                            </td>
 
-                </tr>
+                        </tr>
+                    }
+                }
             }
-        }
-    }
 
 
-</table>
+        </table>
+    </div>
+</div>
+

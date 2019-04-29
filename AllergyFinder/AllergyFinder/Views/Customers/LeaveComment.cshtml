@@ -3,24 +3,15 @@
     ViewBag.Title = "LeaveComment";
 }
 
-<div class="HomePageHeader">
-    <h2>Leave a Comment about a location</h2>
+<div class="HomeHeader">
+    <h3>Leave a Comment about a location</h3>
 </div>
-
-
-<style>
-
-    #map {
-        height: 400px;
-        width: 700px;
-    }
-</style>
-
-
    
 <div class="row">
-    
-    <div class="col-md-8">
+    <div class="col-md-2">
+        @Html.Partial("_SideBarPartial");
+    </div>
+    <div class="col-md-8 SideBar">
         <div id="map"></div>
         <br />
         @using (Html.BeginForm())
@@ -30,7 +21,7 @@
             @Html.HiddenFor(a => a.Longitude)
             <div class="form-horizontal">
 
-                @Html.Label("Leave a Comment", htmlAttributes: new { @class = "control-label col-md-2" })
+               <p>@Html.Label("Leave a Comment", htmlAttributes: new { @class = "control-label col-md-2" })</p>
                 <div class="col-md-10">
                     @Html.TextAreaFor(model => model.Comment, new { @class = "form-control" })
                     <input type="submit" value="Save" class="btn btn-default" />
