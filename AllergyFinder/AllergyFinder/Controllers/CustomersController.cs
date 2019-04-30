@@ -595,15 +595,7 @@ namespace AllergyFinder.Controllers
 
         public ActionResult DeleteCustomAllergen()
         {
-
             return View();
-        }
-
-        public JsonResult GetAll()
-        {
-            List<Allergen> allergens = new List<Allergen>();
-            allergens = db.Allergens.Where(a => a.UserMade == true).ToList();
-            return new JsonResult { Data = allergens, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }
 }

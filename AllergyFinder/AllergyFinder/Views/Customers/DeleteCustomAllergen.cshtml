@@ -1,33 +1,26 @@
-﻿
+﻿@{
+    ViewBag.Title = "Remove a Custom Allergen";
+ }
+<h3>User Created Allergens</h3>
+<body ng-app="allergenApp">
+    <div ng-controller="allergenController">
+        <table class="table" ng-repeat="a in regdata">
+            <tr>
+                <td>
+                    {{a.KnownAllergies}}
+                </td>
+                <td>
+                    <a href="#" ng-click="Delete(a.id)">Delete</a>
+                </td>
+            </tr>
+            
+        </table>
 
-<head>
-    <script src="~/controller.js"></script>
-</head>
+    </div>
 
-<div ng-controller="CustomerController">
-    <table>
-        <tr>
-            <th>
-                Allergen
-            </th>
-            <th>
-                Allergen Id
-            </th>
-        </tr>
-        <tr ng-repeat="a in AllergenList">
-            <td>
-                {{a.KnownAllergies}}
-            </td>
-            <td>
-                {{a.id}}
-            </td>
-        </tr>
-    </table>
-</div>
+</body>
 
 @section scripts{
-<script src="~/Content/Angular/Module.js"></script>
-<script src="~/Content/Angular/Service.js"></script>
-<script src="~/Content/Angular/AngularController.js"></script>
-<link href="~/Content/TableStyle.css" rel="stylesheet" />
+<script src="~/Scripts/angular.min.js"></script>
+<script src="~/JS/JSController.js"></script>
     }
