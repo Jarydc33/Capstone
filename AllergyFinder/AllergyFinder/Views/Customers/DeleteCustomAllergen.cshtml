@@ -1,0 +1,33 @@
+﻿
+
+<head>
+    <script src="~/controller.js"></script>
+</head>
+
+<div ng-controller="CustomerController">
+    <table>
+        <tr>
+            <th>
+                Allergen
+            </th>
+            <th>
+                Allergen Id
+            </th>
+        </tr>
+        <tr ng-repeat="a in AllergenList">
+            <td>
+                {{a.KnownAllergies}}
+            </td>
+            <td>
+                {{a.id}}
+            </td>
+        </tr>
+    </table>
+</div>
+
+@section scripts{
+<script src="~/Content/Angular/Module.js"></script>
+<script src="~/Content/Angular/Service.js"></script>
+<script src="~/Content/Angular/AngularController.js"></script>
+<link href="~/Content/TableStyle.css" rel="stylesheet" />
+    }

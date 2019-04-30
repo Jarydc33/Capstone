@@ -167,7 +167,7 @@ namespace AllergyFinder.Controllers
         {
 
             var customer = GetCustomer();
-            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType); //fix the radius on this
+            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
             var searchRestaurantId = db.Restaurants.Where(r => r.Name == search.RestaurantName).Select(r => r.RestaurantId).FirstOrDefault();
             float[] temp = new float[(restaurants.Length) * 2];
             string[] commentsTemp = new string[restaurants.Length];
@@ -591,6 +591,19 @@ namespace AllergyFinder.Controllers
         public void EditJunctionTable(int? reactionId)
         {
             AllergenReactionJunction toChange = new AllergenReactionJunction();
+        }
+
+        public ActionResult DeleteCustomAllergen()
+        {
+
+            return View();
+        }
+
+        public JsonResult GetAll()
+        {
+            List<Allergen> allergens = new List<Allergen>();
+            allergens = db.Allergens.Where(a => a.UserMade == true).ToList();
+            return new JsonResult { Data = allergens, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
         }
     }
 }

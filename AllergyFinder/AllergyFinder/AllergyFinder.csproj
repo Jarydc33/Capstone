@@ -267,10 +267,14 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Angular\AngularController.js" />
+    <Content Include="Content\Angular\Module.js" />
+    <Content Include="Content\Angular\Service.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\TableStyle.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -347,6 +351,7 @@
     <Content Include="Views\Customers\AddCustomAllergen.cshtml" />
     <Content Include="Views\Customers\DeleteMealReaction.cshtml" />
     <Content Include="Views\Customers\EditFoodLog.cshtml" />
+    <Content Include="Views\Customers\DeleteCustomAllergen.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
