@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
 using AllergyFinder.Models;
+using Microsoft.AspNet.Identity;
 
 namespace AllergyFinder.Controllers
 {
@@ -27,11 +28,23 @@ namespace AllergyFinder.Controllers
         public IHttpActionResult DeleteAllergen(int id)
         {
             Allergen allergen = db.Allergens.Find(id);
+            string userId = User.Identity.GetUserId();
+            Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
             if (allergen == null)
             {
                 return NotFound();
             }
+            //ADD ERROR CHECKING
+            AllergenTotal total = db.AllergenTotals.Where(a => a.AllergenId == id).FirstOrDefault();
+            AllergenJunction user = db.AllergensJunction.Where(a => a.AllergenId == id && a.CustomerId == customer.id).FirstOrDefault();
+            List<AllergenReactionJunction> logged = db.AllergensReactionsJunction.Where(a => a.AllergenId == id && a.CustomerId == customer.id).ToList();
+            foreach(var item in logged)
+            {
+                db.AllergensReactionsJunction.Remove() //how can I do this? Itll kick back an error cause the list has changed.
+            }
 
+            db.AllergensJunction.Remove(user);
+            db.AllergenTotals.Remove(total);
             db.Allergens.Remove(allergen);
             db.SaveChanges();
 
