@@ -29,12 +29,13 @@ namespace AllergyFinder.Controllers
         {
             Allergen allergen = db.Allergens.Find(id);
             string userId = User.Identity.GetUserId();
+            RemoveAllergenFromLog(id);
             Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
             if (allergen == null)
             {
                 return NotFound();
             }
-            //ADD ERROR CHECKING
+            
             try
             {
                 AllergenTotal total = db.AllergenTotals.Where(a => a.AllergenId == id).FirstOrDefault();
@@ -53,11 +54,53 @@ namespace AllergyFinder.Controllers
                 db.AllergensReactionsJunction.RemoveRange(logged);
             }
             catch { }
-            
+
             db.Allergens.Remove(allergen);
             db.SaveChanges();
 
             return Ok(allergen);
+        }
+
+        public void RemoveAllergenFromLog(int id)
+        {
+            string toDelete = db.Allergens.Find(id).KnownAllergies;
+            
+            List<FoodLog> log = db.FoodLogs.ToList();
+            foreach(var item in log)
+            {
+                
+                if (item.Allergens.Contains(toDelete)){
+                    string toRemain = "";
+                    var list = item.Allergens.Split(',');
+                    foreach(var thing in list)
+                    {
+                        if(thing == toDelete)
+                        {
+
+                        }
+                        else if(thing == "")
+                        {
+
+                        }
+                        else
+                        {
+                            toRemain += thing + ",";
+                        }
+                    }
+                    if(toRemain == ",")
+                    {
+
+                        db.FoodLogs.Remove(item);
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        item.Allergens = toRemain;
+                        db.SaveChanges();
+                    }
+                }
+            }
+
         }
 
         protected override void Dispose(bool disposing)

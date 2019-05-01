@@ -459,7 +459,7 @@ namespace AllergyFinder.Controllers
                         newEntry.Total = 1;
                         db.AllergensReactionsJunction.Add(newEntry);
                         db.SaveChanges(); //change to async
-                    }
+                    }                    
                     else
                     {
                         toLog.Total += 1;
