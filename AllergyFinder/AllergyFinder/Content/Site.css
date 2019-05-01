@@ -9,7 +9,7 @@ body {
 
 .navbar {
     background-color: white;
-    color: #663300;
+    color: black;
 }
 
 h3 {
@@ -34,7 +34,7 @@ p {
 
 a.ActionClass {
     color: #cc7a00;
-    text-shadow:1px 1px black;
+    text-shadow: 1px 1px black;
 }
 
 .HomeHeader{

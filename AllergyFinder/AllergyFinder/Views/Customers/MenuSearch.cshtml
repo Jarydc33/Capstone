@@ -4,48 +4,52 @@
 }
 
 <div class="HomeHeader">
-    <h3>Menu Information</h3>
+    <div class="Card">
+        <h3>Menu Information</h3>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial")
     </div>
-    <div class="col-md-6 SideBar">
-        <table class="table">
-            <tr>
-                <th>
-                    <h4>@Html.DisplayName("Menu Item")</h4>
-                </th>
-                <th>
-                    <h4>@Html.DisplayName("Allergens")</h4>
-                </th>
-                <th></th>
+    <div class="col-md-6">
+        <div class="Card">
+            <table class="table">
+                <tr>
+                    <th>
+                        <h4>@Html.DisplayName("Menu Item")</h4>
+                    </th>
+                    <th>
+                        <h4>@Html.DisplayName("Allergens")</h4>
+                    </th>
+                    <th></th>
 
-            </tr>
-            @{
-                if (Model != null && Model.foundItems != null)
-                {
-                    foreach (var item in Model.foundItems)
+                </tr>
+                @{
+                    if (Model != null && Model.foundItems != null)
                     {
-                        <tr>
-                            <td>
-                                <p>@Html.DisplayFor(modelItem => item.FoodItem)</p>
-                            </td>
-                            <td>
-                                <p>@Html.DisplayFor(modelItem => item.Allergens)</p>
-                            </td>
-                            <td>
-                                <p>@Html.ActionLink("Log This Food", "LogRestaurantFood", new { id = item.id })</p>
-                            </td>
+                        foreach (var item in Model.foundItems)
+                        {
+                            <tr>
+                                <td>
+                                    <p>@Html.DisplayFor(modelItem => item.FoodItem)</p>
+                                </td>
+                                <td>
+                                    <p>@Html.DisplayFor(modelItem => item.Allergens)</p>
+                                </td>
+                                <td>
+                                    <p>@Html.ActionLink("Log This Food", "LogRestaurantFood", new { id = item.id })</p>
+                                </td>
 
-                        </tr>
+                            </tr>
+                        }
                     }
                 }
-            }
 
 
-        </table>
+            </table>
+        </div>        
     </div>
 </div>
 

@@ -1,40 +1,43 @@
 ﻿@model IEnumerable<AllergyFinder.Models.FoodLog>
 
 <div class="HomeHeader">
-    <h3>All Logged Meals and Reactions</h3>
+    <div class="Card">
+        <h3>All Logged Meals and Reactions</h3>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial")
     </div>
-    <div class="col-md-6 SideBar">
-        <table class="table">
-            <tr>
-                <th>
-                    <h3>Meal Name</h3>
-                </th>
-                <th>
-                    <h3>Allergens</h3>
-                </th>
-                <th></th>
-                <th></th>
-            </tr>
-            @foreach(var item in Model)
-            {
+    <div class="col-md-6">
+        <div class="Card">
+            <table class="table">
                 <tr>
-                    <td>
-                        <p>@Html.DisplayFor(model => item.MealName)</p>
-                    </td>
-                    <td>
-                        <p>@Html.DisplayFor(model => item.Allergens)</p>
-                    </td>
-                    <td>
-                        <p>@Html.ActionLink("Delete", "DeleteFoodLog", new { id = item.MealId })</p>
-                    </td>
+                    <th>
+                        <h3>Meal Name</h3>
+                    </th>
+                    <th>
+                        <h3>Allergens</h3>
+                    </th>
+                    <th></th>
+                    <th></th>
                 </tr>
-            }
-        </table>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <p>@Html.DisplayFor(model => item.MealName)</p>
+                        </td>
+                        <td>
+                            <p>@Html.DisplayFor(model => item.Allergens)</p>
+                        </td>
+                        <td>
+                            <p>@Html.ActionLink("Delete", "DeleteFoodLog", new { id = item.MealId })</p>
+                        </td>
+                    </tr>
+                }
+            </table>
+        </div>        
     </div>
-
 </div>

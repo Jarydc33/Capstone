@@ -2,37 +2,35 @@
 @model AllergyFinder.Models.EditFoodLogViewModel
 
 <div class="HomeHeader">
-    <h3>All Logged Meals and Reactions</h3>
+    <div class="Card">
+        <h3>Edit a Logged Meal</h3>
+    </div>
 </div>
-
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial")
     </div>
-   
-
     <div class="col-md-4">
-
-        @using (Html.BeginForm())
-        {
-            @Html.HiddenFor(model => model.FoodLogId)
-        <div class="form-horizontal SideBar">
-            <div class="form-group">
-                <p>Meal Name to Change</p>
-                @Html.EditorFor(model => model.LogToChange.MealName, new { htmlAttributes = new { @class = "form-control" } })
-            </div>
-            <div class="form-group">
-                <p>Reaction to Change</p>
-                @Html.DropDownListFor(model => model.ReactionId, (SelectList)Model.Reaction, new { htmlAttributes = "form-control" })
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Add" class="btn btn-default" />
+        <div class="Card">
+            @using (Html.BeginForm())
+            {
+                @Html.HiddenFor(model => model.FoodLogId)
+                <div class="form-horizontal SideBar">
+                    <div class="form-group">
+                        <p>Meal Name to Change</p>
+                        @Html.EditorFor(model => model.LogToChange.MealName, new { htmlAttributes = new { @class = "form-control" } })
+                    </div>
+                    <div class="form-group">
+                        <p>Reaction to Change</p>
+                        @Html.DropDownListFor(model => model.ReactionId, (SelectList)Model.Reaction, new { htmlAttributes = "form-control" })
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Add" class="btn btn-default" />
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        }
-
+            }
+        </div>        
     </div>
-
 </div>

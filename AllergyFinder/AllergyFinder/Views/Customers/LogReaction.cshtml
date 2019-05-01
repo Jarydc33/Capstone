@@ -4,43 +4,50 @@
 }
 
 <div class="HomeHeader">
-    <h3>Log a Reaction</h3>
+    <div class="Card">
+        <h3>Log a Reaction to a Meal</h3>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial");
     </div>
-    <div class="col-md-6 SideBar">
-        <div class="row">
-        </div>
-        @using (Html.BeginForm())
-        {
-        @Html.AntiForgeryToken()
-
-        <div class="form-horizontal">
-            <h4>Customer</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-            <div class="form-group">
-                <p>@Html.Label("Select a meal", htmlAttributes: new { @class = "control-label col-md-2" })</p>
-                @Html.DropDownListFor(model => model.id, (SelectList)Model.LoggedMeals, new { htmlAttributes = "control-label col-md-2" })
-                @Html.ValidationMessageFor(model => model.LoggedMeals, "", new { @class = "text-danger" })
+    <div class="col-md-6">
+        <div class="Card">
+            <div class="row">
             </div>
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-            <div class="form-group">
-                <p>@Html.Label("Select a reaction", htmlAttributes: new { @class = "control-label col-md-2" })</p>
-                @Html.DropDownListFor(model => model.allReactionIds, (MultiSelectList)Model.Reaction, new { htmlAttributes = "control-label col-md-2", multiple = "multiple" })
-                @Html.ValidationMessageFor(model => model.Reaction, "", new { @class = "text-danger" })
-            </div>
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Add" class="btn btn-default" />
+                    <div class="form-group">
+                        <p>@Html.Label("Select a meal", htmlAttributes: new { @class = "control-label col-md-2" })</p>
+                        @Html.DropDownListFor(model => model.id, (SelectList)Model.LoggedMeals, new { htmlAttributes = "control-label col-md-2" })
+                        @Html.ValidationMessageFor(model => model.LoggedMeals, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <p>@Html.Label("Select a reaction", htmlAttributes: new { @class = "control-label col-md-2" })</p>
+                        @Html.DropDownListFor(model => model.allReactionIds, (MultiSelectList)Model.Reaction, new { htmlAttributes = "control-label col-md-2", multiple = "multiple" })
+                        @Html.ValidationMessageFor(model => model.Reaction, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Add" class="btn btn-default" />
+                        </div>
+                    </div>
                 </div>
-            </div>
+            }
         </div>
-        }
+    </div>
+    <div class="col-md-2">
+        <div class="Card">
+            <h4>If you had an allergic reaction to a meal, log it here.</h4>
+        </div>
     </div>
 </div>

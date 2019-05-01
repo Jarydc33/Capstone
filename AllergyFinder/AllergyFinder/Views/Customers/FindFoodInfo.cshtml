@@ -6,43 +6,43 @@
 }
 
 <div class="HomeHeader">
-    <h3>Allergens Found in This Item</h3>
+    <div class="Card">
+        <h3>Allergens Found in This Item</h3>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial")
     </div>
-    <div class="col-md-6 SideBar">
-        <dl class="dl-horizontal">
+    <div class="col-md-6">
+        <div class="Card">
+            <dl class="dl-horizontal">
 
-            @{
-                List<string> allergenOfConcern = new List<string>();
-                foreach (var allergen in Model.userAllergies)
-                {
-                    foreach (var foodAllergen in Model.allergens)
+                @{
+                    List<string> allergenOfConcern = new List<string>();
+                    foreach (var allergen in Model.userAllergies)
                     {
-                        if (allergen.KnownAllergies == foodAllergen)
+                        foreach (var foodAllergen in Model.allergens)
                         {
-                            allergenOfConcern.Add(foodAllergen);
-                            <h4 style="color:red">WARNING: This food contains @foodAllergen which you have listed as a known allergy.</h4>
+                            if (allergen.KnownAllergies == foodAllergen)
+                            {
+                                allergenOfConcern.Add(foodAllergen);
+                                <h4 style="color:red">WARNING: This food contains @foodAllergen which you have listed as a known allergy.</h4>
+                            }
                         }
                     }
                 }
-            }
-
-            <div class="HomeHeader">
                 @foreach (var allergen in Model.allergens)
                 {
                     <dt>
                         <p>@Html.DisplayFor(model => allergen)</p>
                     </dt>
                 }
-            </div>
-        </dl>
-        @Html.ActionLink("Log This Food", "LogFood", new { routeId = 0})
-    </div>
-    
+            </dl>
+            @Html.ActionLink("Log This Food", "LogFood", new { routeId = 0 })
+        </div>        
+    </div>    
 </div>
 
     

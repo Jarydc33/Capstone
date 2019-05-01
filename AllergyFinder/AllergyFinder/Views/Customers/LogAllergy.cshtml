@@ -4,34 +4,47 @@
 }
 
 <div class="HomeHeader">
-    <h3>Log an Existing Allergy</h3>
+    <div class="Card">
+        <h3>Log an Existing Allergy</h3>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial");
     </div>
-    <div class="col-md-8">
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
+    <div class="col-md-6">
+        <div class="Card">
+            @using (Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
 
-        <div class="form-horizontal">
-            <h4>Customer</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-4">
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            <p>@Html.Label("Select an allergy to add", htmlAttributes: new { @class = "control-label col-md-2" })</p>
-            <div class="form-group">
-                @Html.DropDownListFor(model => model.id, (SelectList)Model.allergens, new { htmlAttributes = "control-label col-md-2" })
-            </div>
-            <div class="form-group">
-                <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Add" class="btn btn-default" />
+                            <p>Select an Allergy to Add</p>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.id, (SelectList)Model.allergens, new { htmlAttributes = "control-label col-md-2" })
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-10">
+                                    <input type="submit" value="Add" class="btn btn-default" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
+             }
         </div>
-        }
+    </div>
+    <div class="col-md-4">
+        <div class="Card">
+            <h4>By adding an allergen to your profile, you will receive an alert when viewing the allergens in a food. </h4>
+        </div>
     </div>
 </div>
 

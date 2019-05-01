@@ -5,26 +5,36 @@
 }
 
 <div class="HomeHeader">
-    <h3>Allergen Statistics</h3>
+    <div class="Card">
+        <h3>Current Allergen Statistics</h3>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial")
     </div>
-    <div class="col-md-6 SideBar">
-        <h4>Allergens that have the top chance of causing an allergy</h4>
-        <hr />
-        <table>
-            @foreach (var line in Model.results)
-            {
-                <tr>
-                    <td>
-                        <p>@Html.DisplayFor(modelItem => line)</p>
-                    </td>
-                </tr>
-            }
+    <div class="col-md-6">
+        <div class="Card">
+            <h4>Allergens that have the top chance of causing an allergy</h4>
+            <hr />
+            <table>
+                @foreach (var line in Model.results)
+                {
+                    <tr>
+                        <td>
+                            <p>@Html.DisplayFor(modelItem => line)</p>
+                        </td>
+                    </tr>
+                }
 
-        </table>
-    </div>    
+            </table>
+        </div>        
+    </div>  
+    <div class="col-md-4">
+        <div class="Card">
+            <h4>The stats on this page are based on the number of meals you have logged.</h4>
+            <h4>If you have only logged one meal and one allergy with that meal, then it will display as a 100% chance of that food causing that reaction. The more meals you log, the more precise the stats will be.</h4>
+        </div>
+    </div>
 </div>

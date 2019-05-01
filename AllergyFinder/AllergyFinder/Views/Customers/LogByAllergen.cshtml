@@ -2,15 +2,17 @@
 
 
 <div class="HomeHeader">
-    <h3>Log By Allergen</h3>
+    <div class="Card">
+        <h3>Log Meal by Allergens</h3>
+    </div>
 </div>
 
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-3">
         @Html.Partial("_SideBarPartial")
     </div>
     <div class="col-md-4">
-        <div class="SideBar">
+        <div class="Card">
             @using (Html.BeginForm())
             {
                 <div class="form-group">
@@ -24,15 +26,19 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Add" class="btn btn-default" />
-                    </div>
+                    <input type="submit" value="Add" class="btn btn-default" />
                 </div>
 
             }
 
         </div>
 
+    </div>
+    <div class="col-md-3">
+        <div class="Card">
+            <h4>If you can`t find a food or meal in the database but you know what allergens are in the meal, log it here.</h4>
+            <h4>Click on all the allergens in the meal and it will add it to the database for you.</h4>
+        </div>
     </div>
 
 </div>
