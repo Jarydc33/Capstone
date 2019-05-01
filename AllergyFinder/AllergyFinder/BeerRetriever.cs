@@ -11,7 +11,7 @@ namespace AllergyFinder
 {
     public class BeerRetriever
     {
-        public static BeerClass1[] Retrieve(string beerName)
+        public static Task<BeerClass1[]> Retrieve(string beerName)
         {
             string editedBeerName = beerName.Replace(" ", "_");
             string strurltest = "https://api.punkapi.com/v2/beers?beer_name=" + beerName;
@@ -28,8 +28,12 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            var beerRequest = JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest);
-            return beerRequest;
+            //var beerRequest = JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest);
+
+            return Task.Run(() =>
+                JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest)
+            );
+            //return beerRequest;
 
         }
     }

@@ -512,9 +512,9 @@ namespace AllergyFinder.Controllers
         }
 
         [HttpPost]
-        public ActionResult LogAlcohol(LogAlcoholViewModel model)
+        public async Task<ActionResult> LogAlcohol(LogAlcoholViewModel model)
         {
-            model.Beers = BeerRetriever.Retrieve(model.BeerName);
+            model.Beers = await BeerRetriever.Retrieve(model.BeerName);
             return View(model);
         }
 
