@@ -35,16 +35,25 @@ namespace AllergyFinder.Controllers
                 return NotFound();
             }
             //ADD ERROR CHECKING
-            AllergenTotal total = db.AllergenTotals.Where(a => a.AllergenId == id).FirstOrDefault();
-            AllergenJunction user = db.AllergensJunction.Where(a => a.AllergenId == id && a.CustomerId == customer.id).FirstOrDefault();
-            List<AllergenReactionJunction> logged = db.AllergensReactionsJunction.Where(a => a.AllergenId == id && a.CustomerId == customer.id).ToList();
-            foreach(var item in logged)
+            try
             {
-                db.AllergensReactionsJunction.Remove() //how can I do this? Itll kick back an error cause the list has changed.
+                AllergenTotal total = db.AllergenTotals.Where(a => a.AllergenId == id).FirstOrDefault();
+                db.AllergenTotals.Remove(total);
             }
-
-            db.AllergensJunction.Remove(user);
-            db.AllergenTotals.Remove(total);
+            catch { }
+            try
+            {
+                AllergenJunction user = db.AllergensJunction.Where(a => a.AllergenId == id && a.CustomerId == customer.id).FirstOrDefault();
+                db.AllergensJunction.Remove(user);
+            }
+            catch { }
+            try
+            {
+                List<AllergenReactionJunction> logged = db.AllergensReactionsJunction.Where(a => a.AllergenId == id && a.CustomerId == customer.id).ToList();
+                db.AllergensReactionsJunction.RemoveRange(logged);
+            }
+            catch { }
+            
             db.Allergens.Remove(allergen);
             db.SaveChanges();
 
