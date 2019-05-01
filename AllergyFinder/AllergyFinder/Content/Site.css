@@ -3,22 +3,28 @@
 body {
     padding-top: 50px;
     padding-bottom: 20px;
-    background-color: #B3E0F2;
+    background-color: #E8E8E8;
     font: 16px "Quicksand";
+}
+
+.navbar {
+    background-color: white;
+    color: #663300;
+}
+
+h3 {
+    color: #cc7a00;
     text-shadow: 1px 1px black;
 }
 
-
-h3 {
-    color: #1DA1F2;
-}
-
 h4 {
-    color: #63CAF2;
+    color: #cc7a00;
+    text-shadow: 1px 1px black;
 }
 
 p {
-    color: #F25E5E;
+    color: #cc7a00;
+    text-shadow: 1px 1px black;
 }
 
 #map {
@@ -27,17 +33,43 @@ p {
 }
 
 a.ActionClass {
-    color: #63CAF2;
+    color: #cc7a00;
+    text-shadow:1px 1px black;
 }
 
 .HomeHeader{
     text-align:center;
+    margin-top:15px;
     margin-bottom:25px;
 }
 
-#HomeTopRow{
-    margin-bottom:50px;
-    
+#HomeTopRow {
+    margin-bottom: 30px;
+    height: 400px;
+    width: 100%;
+    border-radius: 5px 5px;
+    box-shadow: 5px 5px gray;
+    background-image: url('Images/HomePicture.png');
+    background-size: cover;
+}
+
+#HomeRow1 {
+    background-image: url('Images/Image3.jpg');
+    background-position:10% 50%;
+    background-size: cover;
+    border-radius: 5px 5px;
+    box-shadow: 5px 5px gray;
+    height: 300px;
+    max-width: 100%;
+}
+
+#HomeRow2 {
+    background-image: url('Images/Image2.jpg');
+    background-size: cover;
+    border-radius: 5px 5px;
+    box-shadow: 5px 5px gray;
+    height: 300px;
+    width: 100%;
 }
 
 #HomeColumns {
@@ -47,11 +79,11 @@ a.ActionClass {
     box-shadow: 5px 5px #515552;
 }
 
-.SideBar {
-    background-color: #104290;
-    padding:25px;
+.Card {
+    background-color: #A9A5A5;
+    padding: 15px;
     border-radius: 5px 5px;
-    box-shadow: 5px 5px black;
+    box-shadow: 5px 5px #5F4D4D;
     margin-bottom: 25px;
     opacity: .75;
 }
