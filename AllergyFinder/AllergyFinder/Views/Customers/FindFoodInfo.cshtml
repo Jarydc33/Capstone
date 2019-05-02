@@ -17,29 +17,26 @@
     </div>
     <div class="col-md-6">
         <div class="Card">
-            <dl class="dl-horizontal">
 
-                @{
-                    List<string> allergenOfConcern = new List<string>();
-                    foreach (var allergen in Model.userAllergies)
+            @{
+                List<string> allergenOfConcern = new List<string>();
+                foreach (var allergen in Model.userAllergies)
+                {
+                    foreach (var foodAllergen in Model.allergens)
                     {
-                        foreach (var foodAllergen in Model.allergens)
+                        if (allergen.KnownAllergies == foodAllergen)
                         {
-                            if (allergen.KnownAllergies == foodAllergen)
-                            {
-                                allergenOfConcern.Add(foodAllergen);
-                                <h4 style="color:red">WARNING: This food contains @foodAllergen which you have listed as a known allergy.</h4>
-                            }
+                            allergenOfConcern.Add(foodAllergen);
+                            <h4 style="color:red; text-decoration:underline">WARNING: This food contains @foodAllergen which you have listed as a known allergy.</h4>
                         }
                     }
                 }
-                @foreach (var allergen in Model.allergens)
-                {
-                    <dt>
-                        <p>@Html.DisplayFor(model => allergen)</p>
-                    </dt>
-                }
-            </dl>
+            }
+            @foreach (var allergen in Model.allergens)
+            {
+                   <p style="text-decoration:underline"><strong>@Html.DisplayFor(model => allergen)</strong></p>
+            }
+            
             @Html.ActionLink("Log This Food", "LogFood", new { routeId = 0 })
         </div>        
     </div>    

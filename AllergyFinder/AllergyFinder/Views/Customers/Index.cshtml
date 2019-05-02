@@ -15,46 +15,48 @@
         @Html.Partial("_SideBarPartial")
     </div>
     <div class="col-md-4">
-        <div class="Card">
-            <table class="table">
+        <div class="Card"> 
+            <div class="Scroll">
+                <table class="table">
 
-                @{
-                    if (Model != null && Model.retrievedFoods != null)
-                    {
-                        <tr>
-                            <th>
-                                <h4>Food Name</h4>
-                            </th>
-                            <th></th>
-                            <th></th>
-
-                        </tr>
-
-                        foreach (var item in Model.retrievedFoods)
+                    @{
+                        if (Model != null && Model.retrievedFoods != null)
                         {
                             <tr>
-                                <td>
-                                    <p>@Html.DisplayFor(modelItem => item.name)</p>
-                                </td>
-                                <td>
-                                    <p>@Html.ActionLink("View Allergens", "FindFoodInfo", new { NDBNo = item.ndbno, route = 0, mealName = item.name })</p>
-                                </td>
-                                <td>
-                                    <p>@Html.ActionLink("Log This Food", "FindFoodInfo", new { NDBNo = item.ndbno, route = 1, mealName = item.name })</p>
-                                </td>
+                                <th>
+                                    <h4>Food Name</h4>
+                                </th>
+                                <th></th>
+                                <th></th>
 
                             </tr>
+
+                            foreach (var item in Model.retrievedFoods)
+                            {
+                                <tr>
+                                    <td>
+                                        <p>@Html.DisplayFor(modelItem => item.name)</p>
+                                    </td>
+                                    <td>
+                                        <p>@Html.ActionLink("View Allergens", "FindFoodInfo", new { NDBNo = item.ndbno, route = 0, mealName = item.name })</p>
+                                    </td>
+                                    <td>
+                                        <p>@Html.ActionLink("Log This Food", "FindFoodInfo", new { NDBNo = item.ndbno, route = 1, mealName = item.name })</p>
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Click here to Search for a Food", "FindFoodItem", null, new { @class = "ActionClass" })
+
                         }
                     }
-                    else
-                    {
-                        @Html.ActionLink("Click here to Search for a Food", "FindFoodItem", null, new { @class = "ActionClass" })
-                        
-                    }
-                }
 
 
-            </table>
+                </table>
+            </div>            
         </div>
 
     </div>
