@@ -7,13 +7,13 @@ namespace AllergyFinder.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddedPercentage : IMigrationMetadata
+    public sealed partial class databaseUpdate : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedPercentage));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(databaseUpdate));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904241555104_AddedPercentage"; }
+            get { return "201905021413445_databaseUpdate"; }
         }
         
         string IMigrationMetadata.Source

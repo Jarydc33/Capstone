@@ -13,7 +13,7 @@ namespace AllergyFinder.Migrations
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(AllergyFinder.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             //context.Allergens.AddOrUpdate(x => x.id,
             //    new Allergen() { id = 1, KnownAllergies = "Wheat", UserMade = false },

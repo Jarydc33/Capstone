@@ -37,6 +37,10 @@ a.ActionClass {
     text-shadow: 1px 1px black;
 }
 
+.NoShadow{
+    text-shadow:none;
+}
+
 .HomeHeader{
     text-align:center;
     margin-top:15px;

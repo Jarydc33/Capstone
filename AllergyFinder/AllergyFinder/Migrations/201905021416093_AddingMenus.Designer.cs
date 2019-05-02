@@ -7,13 +7,13 @@ namespace AllergyFinder.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddedUserMade : IMigrationMetadata
+    public sealed partial class AddingMenus : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedUserMade));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddingMenus));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904291438579_AddedUserMade"; }
+            get { return "201905021416093_AddingMenus"; }
         }
         
         string IMigrationMetadata.Source

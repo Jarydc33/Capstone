@@ -204,37 +204,17 @@
     </Compile>
     <Compile Include="Keys.cs" />
     <Compile Include="MenuRetriever.cs" />
-    <Compile Include="Migrations\201904241231269_RemaakingDatabase.cs" />
-    <Compile Include="Migrations\201904241231269_RemaakingDatabase.Designer.cs">
-      <DependentUpon>201904241231269_RemaakingDatabase.cs</DependentUpon>
+    <Compile Include="Migrations\201905021413445_databaseUpdate.cs" />
+    <Compile Include="Migrations\201905021413445_databaseUpdate.Designer.cs">
+      <DependentUpon>201905021413445_databaseUpdate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904241555104_AddedPercentage.cs" />
-    <Compile Include="Migrations\201904241555104_AddedPercentage.Designer.cs">
-      <DependentUpon>201904241555104_AddedPercentage.cs</DependentUpon>
+    <Compile Include="Migrations\201905021415147_AddingRestaurant.cs" />
+    <Compile Include="Migrations\201905021415147_AddingRestaurant.Designer.cs">
+      <DependentUpon>201905021415147_AddingRestaurant.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201904241846008_FloatToDouble.cs" />
-    <Compile Include="Migrations\201904241846008_FloatToDouble.Designer.cs">
-      <DependentUpon>201904241846008_FloatToDouble.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904251939579_AddingMenuAPI.cs" />
-    <Compile Include="Migrations\201904251939579_AddingMenuAPI.Designer.cs">
-      <DependentUpon>201904251939579_AddingMenuAPI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904251959279_AddedRowMenu.cs" />
-    <Compile Include="Migrations\201904251959279_AddedRowMenu.Designer.cs">
-      <DependentUpon>201904251959279_AddedRowMenu.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904252008139_AddingMenuItems.cs" />
-    <Compile Include="Migrations\201904252008139_AddingMenuItems.Designer.cs">
-      <DependentUpon>201904252008139_AddingMenuItems.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904291214368_AddedMealName.cs" />
-    <Compile Include="Migrations\201904291214368_AddedMealName.Designer.cs">
-      <DependentUpon>201904291214368_AddedMealName.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201904291438579_AddedUserMade.cs" />
-    <Compile Include="Migrations\201904291438579_AddedUserMade.Designer.cs">
-      <DependentUpon>201904291438579_AddedUserMade.cs</DependentUpon>
+    <Compile Include="Migrations\201905021416093_AddingMenus.cs" />
+    <Compile Include="Migrations\201905021416093_AddingMenus.Designer.cs">
+      <DependentUpon>201905021416093_AddingMenus.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -1156,29 +1136,14 @@
     <Content Include="Scripts\jquery-3.3.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201904241231269_RemaakingDatabase.resx">
-      <DependentUpon>201904241231269_RemaakingDatabase.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905021413445_databaseUpdate.resx">
+      <DependentUpon>201905021413445_databaseUpdate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904241555104_AddedPercentage.resx">
-      <DependentUpon>201904241555104_AddedPercentage.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905021415147_AddingRestaurant.resx">
+      <DependentUpon>201905021415147_AddingRestaurant.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904241846008_FloatToDouble.resx">
-      <DependentUpon>201904241846008_FloatToDouble.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904251939579_AddingMenuAPI.resx">
-      <DependentUpon>201904251939579_AddingMenuAPI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904251959279_AddedRowMenu.resx">
-      <DependentUpon>201904251959279_AddedRowMenu.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904252008139_AddingMenuItems.resx">
-      <DependentUpon>201904252008139_AddingMenuItems.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904291214368_AddedMealName.resx">
-      <DependentUpon>201904291214368_AddedMealName.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201904291438579_AddedUserMade.resx">
-      <DependentUpon>201904291438579_AddedUserMade.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201905021416093_AddingMenus.resx">
+      <DependentUpon>201905021416093_AddingMenus.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

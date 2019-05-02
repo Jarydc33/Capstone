@@ -7,13 +7,13 @@ namespace AllergyFinder.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AddingMenuAPI : IMigrationMetadata
+    public sealed partial class AddingRestaurant : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AddingMenuAPI));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddingRestaurant));
         
         string IMigrationMetadata.Id
         {
-            get { return "201904251939579_AddingMenuAPI"; }
+            get { return "201905021415147_AddingRestaurant"; }
         }
         
         string IMigrationMetadata.Source
