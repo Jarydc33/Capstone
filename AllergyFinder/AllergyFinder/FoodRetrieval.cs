@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AllergyFinder
 {
     public static class FoodRetrieval
     {
-        public static Item[] Retrieve(string brandName, string foodName)
+        public static Task<FoodInfo> Retrieve(string brandName, string foodName)
         {
             string fullName = "";
             if(brandName == null && foodName == null)
@@ -47,12 +48,16 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            var foodRequest = JsonConvert.DeserializeObject<FoodInfo>(strresulttest);
-            if(foodRequest.list == null)
-            {
-                return null;
-            }
-            return foodRequest.list.item;
+            //var foodRequest = JsonConvert.DeserializeObject<FoodInfo>(strresulttest);
+            //if(foodRequest.list == null)
+            //{
+            //    return null;
+            //}
+            return Task.Run(() =>
+                JsonConvert.DeserializeObject<FoodInfo>(strresulttest)
+            );
+
+            //return foodRequest.list.item;
 
         }
     }

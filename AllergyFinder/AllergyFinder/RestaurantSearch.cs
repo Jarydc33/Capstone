@@ -40,9 +40,6 @@ namespace AllergyFinder
             return Task.Run(() =>
             JsonConvert.DeserializeObject<Rootobject>(strresulttest)
             );
-
-            //var restaurantSearch = JsonConvert.DeserializeObject<Rootobject>(strresulttest);
-            //return restaurantSearch.restaurants;
         }
     }
 

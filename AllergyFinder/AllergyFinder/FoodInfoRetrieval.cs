@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AllergyFinder
 {
     public static class FoodInfoRetrieval
     {
-        public static string Retrieve(string NDBNo)
+        public static Task<string> Retrieve(string NDBNo)
         {
             string strurltest = "https://api.nal.usda.gov/ndb/V2/reports?ndbno=" + NDBNo + "&type=b&format=json&api_key=" + Keys.USDAKey;
             WebRequest requestObject = WebRequest.Create(strurltest);
@@ -25,9 +26,10 @@ namespace AllergyFinder
                 strresulttest = sr.ReadToEnd();
                 sr.Close();
             }
-
             var foodRequest = JsonConvert.DeserializeObject<USDAFoodInfo>(strresulttest);
-            return foodRequest.foods[0].food.ing.desc; 
+            return Task.Run(() =>
+                foodRequest.foods[0].food.ing.desc
+            ); 
         }
     }
 

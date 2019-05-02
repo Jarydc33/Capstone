@@ -33,8 +33,6 @@ namespace AllergyFinder
             return Task.Run(() =>
                 JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest)
             );
-            //return beerRequest;
-
         }
     }
 

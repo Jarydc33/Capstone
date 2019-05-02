@@ -208,33 +208,37 @@ namespace AllergyFinder.Controllers
         public ActionResult FindFoodItem()
         {
             FindFoodItemViewModel foodToFind = new FindFoodItemViewModel();
-            //AddAllergenViewModel allAllergens = new AddAllergenViewModel();
-            //foodToFind.Allergens = allAllergens;
-            //foodToFind.Allergens.allergens = new SelectList(db.Allergens.ToList(),"id","KnownAllergies");
             return View(foodToFind);
         }
 
-        public ActionResult MenuSearch(int? id) //ASYNC
+        public async Task<ActionResult> MenuSearch(int? id)
         {
-            var menu = MenuRetriever.Retrieve(id);
+            var menu = await MenuRetriever.Retrieve(id);
             FindFoodItemViewModel menuItems = new FindFoodItemViewModel();
             menuItems.foundItems = menu;
             return View(menuItems);
         }
 
         [HttpPost]//<---need to change this at some point
-        public ActionResult FindFoodItem(FindFoodItemViewModel foodToFind) //ASYNC
+        public async Task<ActionResult> FindFoodItem(FindFoodItemViewModel foodToFind)
         {
-            var foodRetrieval = FoodRetrieval.Retrieve(foodToFind.BrandName,foodToFind.FoodName);
+            var foodRetrievalRoot = await FoodRetrieval.Retrieve(foodToFind.BrandName,foodToFind.FoodName);
+            if(foodRetrievalRoot.list == null)
+            {
+                TempData["foods"] = null;
+                return RedirectToAction("Index");
+            }
+            var foodRetrieval = foodRetrievalRoot.list.item;
             CustomerIndexViewModel foodView = new CustomerIndexViewModel();
             foodView.retrievedFoods = foodRetrieval;
             TempData["foods"] = foodView;
             return RedirectToAction("Index");
         }
 
-        public ActionResult FindFoodInfo(string NDBNo, int route, string mealName)
+        public async Task<ActionResult> FindFoodInfo(string NDBNo, int route, string mealName)
         {
-            var ingredients = FoodInfoRetrieval.Retrieve(NDBNo); //ASYNC
+            var ingredients = await FoodInfoRetrieval.Retrieve(NDBNo);
+            //var ingredients = ingredientsRoot.foods[0].food.ing.desc;
             ingredients = ingredients.ToLower();
             List<string> allergensFound = new List<string>();
             if (route == 1)
@@ -474,7 +478,7 @@ namespace AllergyFinder.Controllers
             return RedirectToAction("Index");
         }
 
-        public void DetermineAllergy(int reactionId) //this will eventually change to a list of ints
+        public void DetermineAllergy(int reactionId)
         {
             ReactionTotal lookupReactionTotal = db.ReactionTotals.Where(r => r.ReactionId == reactionId).FirstOrDefault();
             var reactions = db.AllergensReactionsJunction.Where(a => a.ReactionId == reactionId).ToList();

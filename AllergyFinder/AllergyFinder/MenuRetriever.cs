@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AllergyFinder
 {
     public class MenuRetriever
     {
-        public static MenuItem[] Retrieve(int? restaurantId)
+        public static Task<MenuItem[]> Retrieve(int? restaurantId)
         {
             string strurltest = "http://localhost:59845/api/Menus/" + restaurantId;
             WebRequest requestObject = WebRequest.Create(strurltest);
@@ -27,8 +28,10 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            var foundRestaurant = JsonConvert.DeserializeObject<MenuItem[]>(strresulttest);
-            return foundRestaurant;
+            return Task.Run(() =>
+                JsonConvert.DeserializeObject<MenuItem[]>(strresulttest)
+            );
+
         }
     }
 }
