@@ -163,11 +163,12 @@ namespace AllergyFinder.Controllers
         }
 
         [HttpPost]
-        public ActionResult FindRestaurant(FindRestaurantViewModel search)
+        public async Task<ActionResult> FindRestaurant(FindRestaurantViewModel search) 
         {
 
             var customer = GetCustomer();
-            var restaurants = RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
+            var restaurantsRoot = await RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
+            var restaurants = restaurantsRoot.restaurants;
             var searchRestaurantId = db.Restaurants.Where(r => r.Name == search.RestaurantName).Select(r => r.RestaurantId).FirstOrDefault();
             float[] temp = new float[(restaurants.Length) * 2];
             string[] commentsTemp = new string[restaurants.Length];
@@ -213,7 +214,7 @@ namespace AllergyFinder.Controllers
             return View(foodToFind);
         }
 
-        public ActionResult MenuSearch(int? id)
+        public ActionResult MenuSearch(int? id) //ASYNC
         {
             var menu = MenuRetriever.Retrieve(id);
             FindFoodItemViewModel menuItems = new FindFoodItemViewModel();
@@ -222,7 +223,7 @@ namespace AllergyFinder.Controllers
         }
 
         [HttpPost]//<---need to change this at some point
-        public ActionResult FindFoodItem(FindFoodItemViewModel foodToFind)
+        public ActionResult FindFoodItem(FindFoodItemViewModel foodToFind) //ASYNC
         {
             var foodRetrieval = FoodRetrieval.Retrieve(foodToFind.BrandName,foodToFind.FoodName);
             CustomerIndexViewModel foodView = new CustomerIndexViewModel();
@@ -233,7 +234,7 @@ namespace AllergyFinder.Controllers
 
         public ActionResult FindFoodInfo(string NDBNo, int route, string mealName)
         {
-            var ingredients = FoodInfoRetrieval.Retrieve(NDBNo);
+            var ingredients = FoodInfoRetrieval.Retrieve(NDBNo); //ASYNC
             ingredients = ingredients.ToLower();
             List<string> allergensFound = new List<string>();
             if (route == 1)
@@ -458,7 +459,7 @@ namespace AllergyFinder.Controllers
                         newEntry.AllergenId = tempId;
                         newEntry.Total = 1;
                         db.AllergensReactionsJunction.Add(newEntry);
-                        db.SaveChanges(); //change to async
+                        db.SaveChanges(); 
                     }                    
                     else
                     {

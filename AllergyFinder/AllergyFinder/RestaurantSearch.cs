@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace AllergyFinder
 {
     public class RestaurantSearch
     {
-        public static Restaurant[] Retrieve(string search, string cityId, string radius, string cuisine)
+        public static Task<Rootobject> Retrieve(string search, string cityId, string radius, string cuisine)
         {
             string strurltest;
             string formattedName = "";
@@ -36,8 +37,12 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            var restaurantSearch = JsonConvert.DeserializeObject<Rootobject>(strresulttest);
-            return restaurantSearch.restaurants;
+            return Task.Run(() =>
+            JsonConvert.DeserializeObject<Rootobject>(strresulttest)
+            );
+
+            //var restaurantSearch = JsonConvert.DeserializeObject<Rootobject>(strresulttest);
+            //return restaurantSearch.restaurants;
         }
     }
 
