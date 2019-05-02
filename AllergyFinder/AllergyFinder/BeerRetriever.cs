@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -17,8 +18,7 @@ namespace AllergyFinder
             string strurltest = "https://api.punkapi.com/v2/beers?beer_name=" + beerName;
             WebRequest requestObject = WebRequest.Create(strurltest);
             requestObject.Method = "GET";
-            HttpWebResponse responseObject = null;
-            responseObject = (HttpWebResponse)requestObject.GetResponse();
+            HttpWebResponse responseObject = (HttpWebResponse)requestObject.GetResponse();
 
             string strresulttest = null;
             using (Stream stream = responseObject.GetResponseStream())
@@ -28,12 +28,39 @@ namespace AllergyFinder
                 sr.Close();
             }
 
-            //var beerRequest = JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest);
-
             return Task.Run(() =>
                 JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest)
             );
         }
+
+        //public async static Task<BeerClass1[]> Retrieve(string beerName)
+        //{
+        //    string url = "https://api.punkapi.com/v2/beers?beer_name=" + beerName;
+
+        //    var strresulttest = await GetAPI(url);
+
+        //    var test = JsonConvert.DeserializeObject<BeerClass1[]>(strresulttest);
+        //    return test;
+        //}
+
+        //public static Task<string> GetAPI(string strurltest)
+        //{
+        //    WebRequest requestObject = WebRequest.Create(strurltest);
+        //    requestObject.Method = "GET";
+        //    HttpWebResponse responseObject = null;
+        //    responseObject = (HttpWebResponse)requestObject.GetResponse();
+
+        //    string strresulttest = null;
+        //    using (Stream stream = responseObject.GetResponseStream())
+        //    {
+        //        StreamReader sr = new StreamReader(stream);
+        //        strresulttest = sr.ReadToEnd();
+        //        sr.Close();
+        //    }
+        //    return Task.Run(() =>
+        //        strresulttest
+        //    );
+        //}
     }
 
     public class BeerClass1

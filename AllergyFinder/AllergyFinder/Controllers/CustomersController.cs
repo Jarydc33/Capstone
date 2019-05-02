@@ -256,16 +256,16 @@ namespace AllergyFinder.Controllers
             FindFoodInfoViewModel model = new FindFoodInfoViewModel();
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(u => u.ApplicationUserId == userId).FirstOrDefault();
-            AllergenJunction temp = db.AllergensJunction.Where(a => a.CustomerId == customer.id).FirstOrDefault();
-            try
+            var temp = db.AllergensJunction.Where(a => a.CustomerId == customer.id).ToList();
+            var placeHolder = new List<Allergen>();
+            foreach (var item in temp)
             {
-                model.userAllergies = db.Allergens.Where(a => a.id == temp.AllergenId).ToList();
-            }
-            catch
-            {
-
+                var y = db.Allergens.Where(a => a.id == item.AllergenId).FirstOrDefault();
+                
+                placeHolder.Add(y);
             }
             model.allergens = allergensFound.Distinct().ToList();
+            model.userAllergies = placeHolder;
             model.toLogAllergens = foodLogAllergens;
             return View(model);
         }
@@ -363,7 +363,7 @@ namespace AllergyFinder.Controllers
                     logAllergen.AllergenId = tempId;
                     logAllergen.Total = 1;
                     db.AllergenTotals.Add(logAllergen);
-                    db.SaveChanges(); // change to async
+                    db.SaveChanges();
                 }
                 else
                 {
@@ -543,7 +543,7 @@ namespace AllergyFinder.Controllers
 
         public ActionResult DeleteMealReaction()
         {
-            List<FoodLog> loggedMeals = new List<FoodLog>(); //make sure this affects the reactions table
+            List<FoodLog> loggedMeals = new List<FoodLog>();
             loggedMeals = db.FoodLogs.Where(r => r.Reactions != "Logged").ToList();
             return View(loggedMeals);
         }
@@ -557,41 +557,6 @@ namespace AllergyFinder.Controllers
             TempData["foods"] = null;
             return RedirectToAction("Index");
         }
-
-        //public ActionResult EditFoodLog(int? id)
-        //{
-        //    EditFoodLogViewModel model = new EditFoodLogViewModel();
-        //    model.LogToChange = db.FoodLogs.Where(f => f.MealId == id).FirstOrDefault();
-        //    model.Reaction = new SelectList(db.Reactions.ToList(), "id", "CommonReactions");
-        //    model.FoodLogId = id;
-        //    return View(model);
-        //}
-
-        //[HttpPost]
-        //public ActionResult EditFoodLog(EditFoodLogViewModel model)
-        //{
-
-        //    FoodLog toChange = db.FoodLogs.Where(f => f.MealId == model.FoodLogId).FirstOrDefault();
-        //    if(model.LogToChange.MealName == null)
-        //    {
-        //        toChange.MealName = "User Changed";
-        //    }
-        //    else
-        //    {
-        //        toChange.MealName = model.LogToChange.MealName;
-        //    }
-            
-        //    if(toChange.Reactions == "Logged")
-        //    {
-        //        EditJunctionTable(model.ReactionId);
-        //    }
-        //    else
-        //    {
-
-        //    }
-        //    TempData["foods"] = null;
-        //    return RedirectToAction("Index");
-        //}
 
         public void EditJunctionTable(int? reactionId)
         {
