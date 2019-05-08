@@ -9,25 +9,27 @@ using System.Web;
 using System.Web.Mvc;
 using AllergyFinder.Models;
 using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 
 namespace AllergyFinder.Controllers
 {
-    
+    [Authorize(Roles = "Customer")]
     public class CustomersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        
         public ActionResult Index()
         {
             CustomerIndexViewModel customerView = TempData["foods"] as CustomerIndexViewModel;
             return View(customerView);
         }
-        
+        [AllowAnonymous]
         public ActionResult Create()
         {
             Customer customerToAdd = new Customer();
             return View(customerToAdd);
         }
+        [AllowAnonymous]
         [HttpPost]
         public ActionResult Create(Customer customerToAdd)
         {

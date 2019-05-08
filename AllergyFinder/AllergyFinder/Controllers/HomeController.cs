@@ -31,7 +31,7 @@ namespace AllergyFinder.Controllers
             }
             return View();
         }
-
+               
         public Boolean isAdminUser()
         {
             if (User.Identity.IsAuthenticated)
