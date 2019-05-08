@@ -20,7 +20,9 @@ namespace AllergyFinder.Controllers
         // GET: api/Allergens
         public List<Allergen> GetAllergens()
         {
-            List<Allergen> edited = db.Allergens.Where(a => a.UserMade == true).ToList();
+            var userId = User.Identity.GetUserId();
+            var user = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
+            List<Allergen> edited = db.Allergens.Where(a => a.UserMade == true && a.CustomerId == user.id).ToList();
             return edited;
         }
         // DELETE: api/Allergens/5

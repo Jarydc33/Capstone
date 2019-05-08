@@ -213,6 +213,10 @@
     <Compile Include="Migrations\201905081247355_addDB.Designer.cs">
       <DependentUpon>201905081247355_addDB.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201905081504329_changedCustomer.cs" />
+    <Compile Include="Migrations\201905081504329_changedCustomer.Designer.cs">
+      <DependentUpon>201905081504329_changedCustomer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddAllergenViewModel.cs" />
@@ -1138,6 +1142,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201905081247355_addDB.resx">
       <DependentUpon>201905081247355_addDB.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201905081504329_changedCustomer.resx">
+      <DependentUpon>201905081504329_changedCustomer.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

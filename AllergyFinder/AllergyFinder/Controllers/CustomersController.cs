@@ -12,7 +12,7 @@ using Microsoft.AspNet.Identity;
 
 namespace AllergyFinder.Controllers
 {
-    [Authorize(Roles ="Customer")]
+    
     public class CustomersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -22,7 +22,7 @@ namespace AllergyFinder.Controllers
             CustomerIndexViewModel customerView = TempData["foods"] as CustomerIndexViewModel;
             return View(customerView);
         }
-
+        
         public ActionResult Create()
         {
             Customer customerToAdd = new Customer();
@@ -105,20 +105,6 @@ namespace AllergyFinder.Controllers
             return RedirectToAction("Index");
         }
 
-        //public ActionResult LeaveComment()
-        //{
-        //    LocationComment newComment = new LocationComment();
-        //    return View(newComment);
-        //}
-
-        //[HttpPost]
-        //public ActionResult LeaveComment(LocationComment commentToAdd)
-        //{
-        //    db.LocationComments.Add(commentToAdd);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
         public ActionResult LogAllergy()
         {
             AddAllergenViewModel model = new AddAllergenViewModel();
@@ -146,61 +132,12 @@ namespace AllergyFinder.Controllers
             return View(newModel);
         }
 
-        //public ActionResult FindRestaurant()
-        //{
-        //    FindRestaurantViewModel search = new FindRestaurantViewModel();
-        //    return View(search);
-        //}
-
         public Customer GetCustomer()
         {
             string userId = User.Identity.GetUserId();
             Customer customer = db.Customers.Where(c => c.ApplicationUserId == userId).FirstOrDefault();
             return customer;
         }
-
-        //[HttpPost]
-        //public async Task<ActionResult> FindRestaurant(FindRestaurantViewModel search) 
-        //{
-
-        //    var customer = GetCustomer();
-        //    var restaurantsRoot = await RestaurantSearch.Retrieve(search.RestaurantName, customer.City_Id,search.Radius,search.CuisineType);
-        //    var restaurants = restaurantsRoot.restaurants;
-        //    var searchRestaurantId = db.Restaurants.Where(r => r.Name == search.RestaurantName).Select(r => r.RestaurantId).FirstOrDefault();
-        //    float[] temp = new float[(restaurants.Length) * 2];
-        //    string[] commentsTemp = new string[restaurants.Length];
-        //    var comments = GetComments.Retrieve();
-        //    for(int i = 0,j=0; i < restaurants.Length; i++,j+=2)
-        //    {
-        //        temp[j] = float.Parse(restaurants[i].restaurant.location.latitude);
-        //        temp[j+1] = float.Parse(restaurants[i].restaurant.location.longitude);
-        //        foreach(var comment in comments)
-        //        {
-        //            if(comment.Latitude == temp[j] && comment.Longitude == temp[j + 1])
-        //            {
-        //                commentsTemp[i] = comment.Comment;
-        //            }
-        //            else
-        //            {
-        //                commentsTemp[i] = "No Comments Saved";
-        //            }
-        //        }
-        //    }
-        //    search.AllRestaurants = temp;
-        //    search.RestaurantId = searchRestaurantId;
-        //    search.Comments = commentsTemp;
-        //    return View(search);
-        //}
-
-        //public ActionResult RouteGuidance(FindRestaurantViewModel location)
-        //{
-        //    float?[] temp = new float?[2];
-        //    temp[0] = location.Latitude;
-        //    temp[1] = location.Longitude;
-        //    RouteGuidanceViewModel directions = new RouteGuidanceViewModel();
-        //    directions.coordinates = temp;
-        //    return View(directions);
-        //}
 
         public ActionResult FindFoodItem()
         {
@@ -270,6 +207,8 @@ namespace AllergyFinder.Controllers
         public List<string> FindAllergens(string ingredients, bool logger)
         {
             var knownAllergens = db.Allergens.ToList();
+            var user = GetCustomer();
+            var allAllergens = db.Allergens.Where(a => a.CustomerId == null || a.CustomerId == user.id).ToList();
             List<string> allergensFound = new List<string>();
             foreach(var allergen in knownAllergens) 
             {
@@ -399,7 +338,8 @@ namespace AllergyFinder.Controllers
         public ActionResult LogByAllergen()
         {
             LogByAllergenViewModel model = new LogByAllergenViewModel();
-            model.Allergens = new MultiSelectList(db.Allergens.ToList(),"id","KnownAllergies");
+            var user = GetCustomer();
+            model.Allergens = new MultiSelectList(db.Allergens.Where(a => a.CustomerId == null || a.CustomerId == user.id).ToList(),"id","KnownAllergies");
             return View(model);
         }
 
@@ -531,7 +471,9 @@ namespace AllergyFinder.Controllers
         {
             Allergen toAdd = new Allergen();
             toAdd.KnownAllergies = model.AllergenName;
+            Customer user = GetCustomer();
             toAdd.UserMade = true;
+            toAdd.CustomerId = user.id;
             db.Allergens.Add(toAdd);
             db.SaveChanges();
             TempData["foods"] = null;
