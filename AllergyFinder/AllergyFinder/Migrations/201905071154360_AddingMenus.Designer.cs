@@ -13,7 +13,7 @@ namespace AllergyFinder.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201905021416093_AddingMenus"; }
+            get { return "201905071154360_AddingMenus"; }
         }
         
         string IMigrationMetadata.Source
