@@ -14,7 +14,7 @@ namespace AllergyFinder
     {
         public static Task<MenuItem[]> Retrieve(int? restaurantId)
         {
-            string strurltest = "http://localhost:59845/api/Menus/" + restaurantId;
+            string strurltest = "https://allergenassistant.com/api/Menus/" + restaurantId;
             WebRequest requestObject = WebRequest.Create(strurltest);
             requestObject.Method = "GET";
             HttpWebResponse responseObject = null;

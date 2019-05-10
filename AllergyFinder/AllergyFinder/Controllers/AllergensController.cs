@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity;
 
 namespace AllergyFinder.Controllers
 {
+    [AllowCrossSite]
     public class AllergensController : ApiController
     {
         private ApplicationDbContext db = new ApplicationDbContext();

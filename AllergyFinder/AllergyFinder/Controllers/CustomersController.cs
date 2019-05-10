@@ -488,8 +488,7 @@ namespace AllergyFinder.Controllers
             loggedMeals = db.FoodLogs.Where(r => r.Reactions != "Logged").ToList();
             return View(loggedMeals);
         }
-
-        
+                
         public ActionResult DeleteFoodLog(int? id)
         {
             var toDelete = db.FoodLogs.Where(r => r.MealId == id).FirstOrDefault();
@@ -503,7 +502,7 @@ namespace AllergyFinder.Controllers
         {
             AllergenReactionJunction toChange = new AllergenReactionJunction();
         }
-
+        [AllowCrossSite]
         public ActionResult DeleteCustomAllergen()
         {
             return View();

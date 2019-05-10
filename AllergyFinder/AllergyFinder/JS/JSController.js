@@ -2,9 +2,10 @@
 
 allergenApp.controller("allergenController", function ($scope, $http) {
 
-    $http.get('http://localhost:59845/api/Allergens').then(function (d) {
-        $scope.regdata = d.data;
-        console.log(d.data);
+       $http.get('https://allergenAssistant.com/api/Allergens').then(function (d) {
+           $scope.regdata = d.data;
+           crossDomain: true;
+           console.log(d.data);
     }, function (error) {
         alert("failed");
     });
@@ -13,7 +14,8 @@ allergenApp.controller("allergenController", function ($scope, $http) {
         if (confirm("Are you sure you want to delete this Allergen?")) {
             var httpreq = {
                 method: 'DELETE',
-                url: 'http://localhost:59845/api/Allergens/' + Id
+                crossDomain: true,
+                url: 'https://allergenAssistant.com/api/Allergens/' + Id
             }
             $http(httpreq).then(function () {
                 alert("Allergen has been deleted");
